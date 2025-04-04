@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Basic Usage &#8212; LC_Docs 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="epi_functions_docs.html" />
+    <link rel="prev" title="Calculating the Coupling Factor for Semiconducting Devices" href="calculating_coupling.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Lora:400' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="epi_functions_docs.html" title="&lt;no title&gt;"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="calculating_coupling.html" title="Calculating the Coupling Factor for Semiconducting Devices"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">LC_Docs 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Basic Usage</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="basic-usage">
+<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this heading">¶</a></h1>
+<p>This project consists of three main files that perform the TMM calculations and a handful of tools for plotting the outputs. These three files are:</p>
+<p><strong>LC_Matrix.py</strong>: This file is the main file the user will interact with. There is a header section (described below) where the user will enter all the information needed to control the inputs and outputs of the code.</p>
+<p><strong>epi_cmd_LC.pyx</strong>: Written in Cython, this file sets up the epitaxial layer structure for the calculation and extracts information about the materials. The average user should not need to change anything within this file.
+<em>N.B. This project was originally designed for use with Synopsys Sentaurus. As such it currently require epi, matpar, and sde files produced by Sentaurus to set up the structure.</em></p>
+<p><strong>tmm_mw.pyx</strong>: Written in Cython, this file performs many of the functions required for the TMM calculation. The average user should not need to change anything within this file.</p>
+<section id="set-up">
+<h2>Set-Up<a class="headerlink" href="#set-up" title="Permalink to this heading">¶</a></h2>
+<p>The header section of LC_Matrix.py is as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">### USER INPUT ################################################################ #!!!</span>
+<span class="n">run_cmdline</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">Pooling</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">Threading</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">use_gaussian_quadrature</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">test_integral_z</span> <span class="o">=</span> <span class="s1">&#39;z_loop_calc_a&#39;</span>
+<span class="n">n_angles</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">n_energies</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">include90atend</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># should be relative to the project directory</span>
+<span class="n">matrix_file</span> <span class="o">=</span> <span class="s1">&#39;LC_Outputs/LC_Python.csv&#39;</span>
+<span class="n">h5_filename</span> <span class="o">=</span> <span class="s1">&#39;LC_Outputs/LC_Python.h5&#39;</span>
+
+<span class="c1"># what kind of data do you want to be output?</span>
+<span class="c1"># LC_out = True # output the LC coupling matrix</span>
+<span class="c1"># abs_out = True # output the absorption matrix</span>
+<span class="c1"># abs_th_E = True # output the absorption integrated in two different ways</span>
+<span class="c1"># Efield_out = True</span>
+<span class="c1"># TMM_out = True # output a bunch of TMM data</span>
+<span class="n">write_TMM</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># write the TMM data to the h5 file</span>
+<span class="n">write_pos</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># write the position resolved data to the h5 file</span>
+
+<span class="c1"># these only need to be set if run_cmdline is true</span>
+<span class="n">epi_node</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="n">sde_node</span> <span class="o">=</span> <span class="mi">456</span>
+<span class="n">MatPar_node</span> <span class="o">=</span> <span class="mi">789</span>
+<span class="n">wtot</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">substrate_t</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># 0.0 to include a flat Au back reflector</span>
+</pre></div>
+</div>
+<p>The user inputs perform control the following:</p>
+<p><strong>run_cmdline</strong></p>
+<p>This code can be run from the command line or from within a Sentaurus Python block. If running from the command line this variable should be set to True and if from within Sentaurus it should be set to False. Running on the command line can be useful for debugging and profiling the code.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>At this point in time running LC_Matrix requires some input files that are generated by a Sentaurus project. These files are generated from the epi, matpar, and sde nodes of Synopsys Sentaurus and provide information about the layer structure and refractive indices throughout the device. If you intend to run from the command line but are working with a Sentaurus project the easiest way to handle this is to run the program from the same location as the Sentaurus “results” folder and then supply the required node numbers at the end of the User Input section.</p>
+<p>If you are not intending to work with Sentaurus, a “dummy” Sentaurus file will need to be created that mimics the structure of the Sentaurus project. In the future, a new file format may be added to generalize the process.</p>
+</div>
+<p><strong>Pooling</strong></p>
+<p>If True, allows the code to run in parallel.</p>
+<p><strong>Threading</strong></p>
+<p>Not recommended to be changed. Will likely be removed.</p>
+<p><strong>use_gaussian_quadrature</strong></p>
+<p>If True, the integration over the angular component is done using guassian quadrature. If False, the integral is done using the trapezoidal rule and linearly spaced angles.</p>
+<p><strong>test_integral_z</strong></p>
+<p>Not recommended to be changed. Will likely be removed.</p>
+<p><strong>n_angles</strong></p>
+<p>The number of angles to be used. Will be spaced linearly if use_gaussian_quadrature is False or will be spaced and weighted accordingly if use_gaussian_quadrature is True. The bounds of the angles are [0, <span class="math notranslate nohighlight">\({\pi}\)</span>/2) (<em>Note: user can select whether or not to explicitly include :math:`{pi}`/2 at the end by setting</em> include90atend.)</p>
+<p><strong>n_energies</strong></p>
+<p>The number of energies to be used. Will be spaced linearly in energy. The limits are [E<sub>g</sub> , E<sub>g</sub> + 10*300*k<sub>b</sub> ) where E<sub>g</sub> is the bandgap of the material and k<sub>b</sub> is the Boltzman constant. The bandgap is assumed to be that at 300 K.</p>
+<p><strong>include90atend</strong></p>
+<p>Append <span class="math notranslate nohighlight">\({\pi}\)</span>/2 to the end of the list of angles. Depending on how tightly spaced your angle list is, and whether you are using a guassian quadrature spacing or not, this may not be needed.</p>
+<p><strong>matrix_file</strong></p>
+<p>The name of the matrix file which is output. This is a csv file. The matrix will be located relative to where LCMatrix_pyt.py is run. <em>Note: this only applies if you are running from the command line. If running from within Sentaurus the naming convention is set based on a Sentaurus project variable.</em></p>
+<p><strong>h5_filename</strong></p>
+<p>You may choose to output all the data as an h5 file (see the <strong>write_TMM</strong> and <strong>write_pos</strong> variables), if either of these are True then this is the name of the file that is produced. It is located relative to where LCMatrix_pyt.py is run. This will include all the data contained in the matrix_file.csv as well as some extra values (for example the electric fields at specific angles and energies.)</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The h5 file that is produced can be useful for “deconstructing” the LC matrix or for debugging but it can also produce an extremely large file. I don’t recommend setting this True unless you are prepared to deal with GB of data or you are running on a very sparse mesh.</p>
+</div>
+<p><strong>write_TMM</strong></p>
+<p>If True write the outputs of the TMM calculation. This will include values such as the forward and backward electric fields as a function of angle and position at the boundaries of each layer in the device.</p>
+<p><strong>write_pos</strong></p>
+<p>If True write the outputs of the position dependent calculation. This will include values such as the forward and backward electric fields as a function of angle and position as well as various integrated quantities at each mesh point in the device. This has the potential to create a very large file.</p>
+<p><strong>epi_node</strong></p>
+<p>The number associated with the folder where the Sentaurus epi files are stored. This folder should be located in a results/# folder that is relative to the working directory. This is ignored if you are not running from the command line.</p>
+<p><strong>sde_node</strong></p>
+<p>The number associated with the folder where the Sentaurus device files are stored. This folder should be located in a results/# folder that is relative to the working directory. This is ignored if you are not running from the command line.</p>
+<p><strong>MatPar_node</strong></p>
+<p>The number associated with the folder where the Sentaurus material files for the specific project are located (this is different than the par and pardb folders.) This folder should be located in a results/# folder that is relative to the working directory. This is ignored if you are not running from the command line.</p>
+<p><strong>wtot</strong></p>
+<p>The width of the device. If equal to 1.0 this implies a 1D device calculation (width is normalized to 1 <span class="math notranslate nohighlight">\({\mu}\)</span> m.)</p>
+<p><strong>substrate_t</strong></p>
+<p>The thickness of the substrate (or last layer of the device.) Technically, the last layer in the calculation has semi-infinite thickness. This variable specifies the bottom layer in the Sentaurus project. If it is equal to 0.0, then a semi-infinite layer of gold is set as the last layer in the TMM calculation to simulate a planar back-reflector. If the value is finite then this is the thickness of the last finite layer in the Sentaurus project. A semi-infinite layer of InP <strong>(!!!)</strong> will be appended to the end of the layer stack in the TMM calculation. Additional layers can be added by setting the <strong>back_mat (!!!)</strong> list.</p>
+</section>
+<section id="the-pmi-interface-working-with-sentaurus">
+<h2>The PMI Interface (Working with Sentaurus)<a class="headerlink" href="#the-pmi-interface-working-with-sentaurus" title="Permalink to this heading">¶</a></h2>
+<p>The python program LCMatrix_pyt.py produces the coupling matrix which will be read by Sentaurus using the custom physical model interface: OpticalCoupling_Recombination.
+OpticalCoupling_Recombination is implemented in Sentaurus through a C++ file compiled using Sentaurus’ CMI compiler.
+The g++ compiler used by Sentaurus to compile its tools must match the compiler used by CMI exactly. For example, version vS_2021.06 works with g++ 9.2.0.
+To properly compile OpticalCoupling_Recombination.so.arch follow these steps:</p>
+<ol class="arabic">
+<li><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">Check the compiler version. Run:</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmi<span class="w"> </span>-a
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">The g++ versions must match exactly.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line">If they don’t match you’ll need the correct compiler. Check devtoolset to see if the exact compiler is available. Otherwise follow the below instructions to make the compiler from source (change versions accordingly):</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget<span class="w"> </span>https://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.gz
+tar<span class="w"> </span>-xvf<span class="w"> </span>gcc-9.2.0.tar.gz
+mkdir<span class="w"> </span>obj.gcc-9.2.0
+<span class="nb">cd</span><span class="w"> </span>gcc-9.2.0
+./contrib/download_prerequisites
+<span class="nb">cd</span><span class="w"> </span>../obj.gcc-9.2.0
+../gcc-9.2.0/configure<span class="w"> </span>--prefix<span class="w"> </span><span class="nv">$HOME</span>/.local<span class="w"> </span>--disable-multilib<span class="w"> </span>--enable-languages<span class="o">=</span>c,c++
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><em>Note</em>: setting –prefix points to where the install will be located, in this case it is installed on a local user account</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>-j<span class="w"> </span><span class="m">8</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><em>Note</em>: setting -j sets the number of cores used during make, -j 8 took approximately 1 hr but will depend on the machine</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>install
+</pre></div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line">Point to the new location of g++:</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.local/bin:PATH
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><em>Note</em>: if you’ll need this often then add to your .bashrc file</div>
+<div class="line">Check that it worked:</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>which<span class="w"> </span>g++
+cmi<span class="w"> </span>-a
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">Both should now recognize the new compiler.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line">Make the OpticalCoupling_Recombination file:</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">STROOT</span><span class="o">=</span>/CMC/tools/synopsys/sentaurus_vS_2021.06/
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><em>Note</em>: or set in Makefile. Needed in order to find the proper header files</div>
+<div class="line">The makefile is typically stored in the /pmi/src folder.</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>./path/to/makefile
+make
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">The file should now be properly compiled.</div>
+</div>
+</li>
+</ol>
+</section>
+<section id="running">
+<h2>Running<a class="headerlink" href="#running" title="Permalink to this heading">¶</a></h2>
+<p>There are a few different ways to run the program: from within a Python IDE, using Python from the command line, or using a Python node from within Sentaurus.</p>
+<p>Since the program was written to work with Sentaurus in mind if you are running from an external Python environment you will need to set <cite>run_cmdline = True</cite> and set <cite>epi_node</cite>, <cite>sde_node</cite>, and <cite>MatPar_node</cite> manually. If you are running from within a Sentaurus Python environment then set <cite>run_cmdline = False</cite> amd the remaining values should be filled automatically.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Basic Usage</a><ul>
+<li><a class="reference internal" href="#set-up">Set-Up</a></li>
+<li><a class="reference internal" href="#the-pmi-interface-working-with-sentaurus">The PMI Interface (Working with Sentaurus)</a></li>
+<li><a class="reference internal" href="#running">Running</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation index</a><ul>
+      <li>Previous: <a href="calculating_coupling.html" title="previous chapter">Calculating the Coupling Factor for Semiconducting Devices</a></li>
+      <li>Next: <a href="epi_functions_docs.html" title="next chapter">&lt;no title&gt;</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/basic_usage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+  </body>
+</html>

@@ -1,0 +1,16 @@
+Changes.txt
+LICENSE.txt
+MANIFEST.in
+README.txt
+manual.pdf
+setup.py
+./__init__.py
+./color.py
+./examples.py
+./tests.py
+./tmm_core.py
+tmm.egg-info/PKG-INFO
+tmm.egg-info/SOURCES.txt
+tmm.egg-info/dependency_links.txt
+tmm.egg-info/requires.txt
+tmm.egg-info/top_level.txt

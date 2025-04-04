@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>An Introduction to Luminescent Coupling and Photon Recycling &#8212; LC_Docs 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Calculating the Coupling Factor for Semiconducting Devices" href="calculating_coupling.html" />
+    <link rel="prev" title="Welcome to MJ-LC’s documentation!" href="index.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Lora:400' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="calculating_coupling.html" title="Calculating the Coupling Factor for Semiconducting Devices"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to MJ-LC’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">LC_Docs 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">An Introduction to Luminescent Coupling and Photon Recycling</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="an-introduction-to-luminescent-coupling-and-photon-recycling">
+<h1>An Introduction to Luminescent Coupling and Photon Recycling<a class="headerlink" href="#an-introduction-to-luminescent-coupling-and-photon-recycling" title="Permalink to this heading">¶</a></h1>
+<p>In high-quality semiconducting materials, radiative recombination becomes the dominant recombination mechanism for electron-hole pairs within the device. These recombination events result in the production of a photon which can be absorbed again by the semiconducting material. This is particularly important in direct bandgap materials such as III-Vs, where the absorption coefficient is large. The emission and absorption events are position dependent within the device. A pair of emission and absorption events may occur at the same point within the device or they may occur at different locations within the device. The position dependence between the two events impacts the carrier statistics throughout the device and can lead to changes in measurable properties such as the short-circuit current. open-circuit voltage, and fill factor of the device.</p>
+<p>In multi-junction devices, the emission-absorption process can be divided into two categories depending on the relative locations of the two events.</p>
+<p><strong>Photon recycling</strong>: The emission and absorption events occur within the same subcell of the multijunction device. This can result in an improvement to the V<sub>oc</sub> of the device.</p>
+<p><strong>Luminescent coupling</strong>: The emission and absorption events occur in different subcells of the multijunction device. This can result in a rebalancing of the photocurrent between the subcells if a current mismatch is present. If the mismatch is significant, luminescent coupling can improve the J<sub>sc</sub> of the device.</p>
+<p>It is important to note that the physical process does not make the distinction between where one subcell ends and the next begins. These are simply definitions useful for discussing the physical process that takes place. The matrix produced by this code includes both types of processes implicitly as the coupling between every combination of emission and absorption locations are calculated and recorded.</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation index</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to MJ-LC’s documentation!</a></li>
+      <li>Next: <a href="calculating_coupling.html" title="next chapter">Calculating the Coupling Factor for Semiconducting Devices</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/what_is_LC.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+  </body>
+</html>

@@ -1,0 +1,7 @@
+tmm\_core\_mw module
+====================
+
+.. automodule:: tmm_core_mw
+   :members:
+   :undoc-members:
+   :show-inheritance:
