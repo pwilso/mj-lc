@@ -19,6 +19,7 @@ MJ-LC (MultiJunction Luminescent Coupling) calculates the relationship between a
    epi_functions_docs
    tmm_functions_docs
    publications
+   errors_and_solutions
 
 
 
