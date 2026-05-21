@@ -16,6 +16,8 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Basic Usage" href="basic_usage.html" />
+    <link rel="prev" title="Calculating the Coupling Factor for Semiconducting Devices" href="calculating_coupling.html" />
    
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Lora:400' rel='stylesheet' type='text/css'>
@@ -31,6 +33,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="basic_usage.html" title="Basic Usage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="calculating_coupling.html" title="Calculating the Coupling Factor for Semiconducting Devices"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">LC_Docs 0.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
       </ul>
@@ -44,9 +52,39 @@
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
 <p>The project can be run as a standalone project or in conjunction with a Synopsys Sentaurus simulation. Python is required in both cases.</p>
+<p>Compatibility with different Python versions and different Sentaurus versions is important. We have successfully implemented the code with Python v3.6.8 and with Python v3.13.5. Significant changes affecting installation and package management occured between these two versions so we provide two versions of the code with minor changes to each. Compatibility between different Sentaurus versions can also impact the way the code is implemented. We provide some troubleshooting advice for these concerns. The code has been successfully implemented with Sentaurus versions S-2021.06 and U-2022.12-SP1.</p>
 <section id="python-packages">
 <h2>Python Packages<a class="headerlink" href="#python-packages" title="Permalink to this heading">¶</a></h2>
-<p>The following pacakges are required to run the Python program:</p>
+<p>The Python environment requires the Python.h header files in order to compile the Cython extensions. Ensure that these are installed on your system (using the command <em>sudo apt install python3-dev</em> or similar) or by building your Python environment from source.</p>
+<p>We recommend the user create a virtual environment and install the necessary python packages via the requirements.txt file. For example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir venvs</span>
+<span class="go">python3 -m venv ./venvs/LC_env</span>
+<span class="go">source ./venvs/LC_env/bin/activate</span>
+
+<span class="go">pip install -r requirements.txt</span>
+</pre></div>
+</div>
+</section>
+<section id="compiling-with-cython">
+<h2>Compiling with Cython<a class="headerlink" href="#compiling-with-cython" title="Permalink to this heading">¶</a></h2>
+<p>The <em>epi_cmd_LC.pyx</em> and the <em>tmm_core_mw.pyx</em> files must be compiled with Cython before the program can be successfully run.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cythonize /path/to/Python/tmm/tmm_core_mw.pyx</span>
+<span class="go">cythonize /path/to/Python/epi_cmd_LC.pyx</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-with-sentuarus">
+<h2>Integration with Sentuarus<a class="headerlink" href="#integration-with-sentuarus" title="Permalink to this heading">¶</a></h2>
+<p>Since this code was originally written for exclusive use with Sentaurus even running the program from the terminal or a Python IDE requires some initial Sentaurus integration as described in <a class="reference internal" href="basic_usage.html"><span class="doc">Basic Usage</span></a>.</p>
+<p>The Sentaurus mesh output (usually named <em>n##_msh.tdr</em>) may be generated as version 16 or version 17 depending on the Sentaurus version. Version 16 is required in order for the file format to be recognized as HDF5 and parsable by the h5py functions. To check which version has been produced you can run the following in the terminal:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">file /path/to/n##_msh.tdr</span>
+</pre></div>
+</div>
+<p>The output should return <em>Hierarchical Data Format (version 5) data</em>. If it does not then you may need to convert the file to the appropriate version. From within Sentaurus open a terminal at the mesh node location. The Sentaurus Data Explorer commands can be used to inspect and act on the tdr files. To display information about the tdr file and convert the version:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">tdx --info n##_mesh.tdr</span>
+<span class="go">tdx --tdr2tdr -v16 n##_msh.tdr n##_msh.tdr</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -62,6 +100,8 @@
     <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#python-packages">Python Packages</a></li>
+<li><a class="reference internal" href="#compiling-with-cython">Compiling with Cython</a></li>
+<li><a class="reference internal" href="#integration-with-sentuarus">Integration with Sentuarus</a></li>
 </ul>
 </li>
 </ul>
@@ -69,6 +109,8 @@
   </div><h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation index</a><ul>
+      <li>Previous: <a href="calculating_coupling.html" title="previous chapter">Calculating the Coupling Factor for Semiconducting Devices</a></li>
+      <li>Next: <a href="basic_usage.html" title="next chapter">Basic Usage</a></li>
   </ul></li>
 </ul>
   <div role="note" aria-label="source link">

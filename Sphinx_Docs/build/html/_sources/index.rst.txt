@@ -14,15 +14,14 @@ MJ-LC (MultiJunction Luminescent Coupling) calculates the relationship between a
 
    what_is_LC
    calculating_coupling
+   installation
    basic_usage
    python_functions_docs
    epi_functions_docs
    tmm_functions_docs
    publications
    errors_and_solutions
-
-
-
+   differences_and_changelog
 
 Indices and tables
 ==================
