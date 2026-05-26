@@ -85,6 +85,10 @@
 <span class="go">tdx --tdr2tdr -v16 n##_msh.tdr n##_msh.tdr</span>
 </pre></div>
 </div>
+<p>To have the program run this command automatically, the following line can be added to the file <em>gtooldb.tcl</em>, which has commands for controlling the prologue and epilogue commands for the various Sentuarus tools.</p>
+<div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="k">set</span><span class="w"> </span>WB_tool<span class="k">(</span><span class="nv">sde</span>,<span class="w"> </span>epilogue<span class="k">)</span><span class="w"> </span><span class="k">{</span><span class="nb">exec</span><span class="w"> </span>tdx<span class="w"> </span><span class="o">--</span>tdr2tdr<span class="w"> </span><span class="o">-</span>v16<span class="w"> </span>n@node@_msh.tdr<span class="w"> </span>n@node@_msh.tdr<span class="k">}</span>
+</pre></div>
+</div>
 </section>
 </section>
 

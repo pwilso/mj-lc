@@ -47,3 +47,9 @@ The output should return *Hierarchical Data Format (version 5) data*. If it does
 
   tdx --info n##_mesh.tdr
   tdx --tdr2tdr -v16 n##_msh.tdr n##_msh.tdr
+
+To have the program run this command automatically, the following line can be added to the file *gtooldb.tcl*, which has commands for controlling the prologue and epilogue commands for the various Sentuarus tools.
+
+.. code-block:: tcl
+
+  set WB_tool(sde, epilogue) {exec tdx --tdr2tdr -v16 n@node@_msh.tdr n@node@_msh.tdr}
