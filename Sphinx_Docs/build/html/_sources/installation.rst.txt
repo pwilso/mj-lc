@@ -53,3 +53,9 @@ To have the program run this command automatically, the following line can be ad
 .. code-block:: tcl
 
   set WB_tool(sde, epilogue) {exec tdx --tdr2tdr -v16 n@node@_msh.tdr n@node@_msh.tdr}
+
+There are two methods for running the code from within Sentaurus. The first method calls the LCMatrix_pyt.py script from a Sentaurus Python workbench tool. This uses the version of Python that came packaged with Sentaurus (gPython). An alternative method is to run the code from your chosen Python interpreter using a TCL script. The TCL script can be s single line calling a desired version of Python, from a virtual environment for example, and may look something like the following:
+
+.. code-block:: tcl
+
+  exec /path/to/python/env/bin/python3 /path/to/LCMatrix_pyt.py @LC_filename@ @node|epi@ @node|sde@ @node|MatPar@ @wtot@ @substrate_t@ True > /path/to/output_file.txt 

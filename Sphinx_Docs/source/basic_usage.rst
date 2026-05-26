@@ -195,6 +195,10 @@ To properly compile OpticalCoupling_Recombination.so.arch follow these steps:
 Running
 ----------------------------------
 
-There are a few different ways to run the program: from within a Python IDE, using Python from the command line, or using a Python node from within Sentaurus.
+There are a few different ways to run the program: from within a Python IDE, using Python from the command line, using a Python node from within Sentaurus, or using a TCL script from within Sentaurus.
 
-Since the program was written to work with Sentaurus in mind if you are running from an external Python environment you will need to set `run_cmdline = True` and set `epi_node`, `sde_node`, and `MatPar_node` manually. If you are running from within a Sentaurus Python environment then set `run_cmdline = False` amd the remaining values should be filled automatically.
+Since the program was written to work with Sentaurus in mind if you are running from an external Python environment you will need to set `run_cmdline = True` and set `epi_node`, `sde_node`, and `MatPar_node` manually. If you are running from within a Sentaurus Python environment then set `run_method = Sentaurus` amd the necessary values should be filled automatically. If you are running from an IDE then `epi_node`, `sde_node`, and `MatPar_node` will ned to be set manually at the top of the script. If you are running from either the command line directly or using a TCL script within Sentaurus then the values are set using system arguments:
+
+.. code-block:: console
+
+  /path/to/python/env/bin/python3 /path/to/LCMatrix_pyt.py LC_filename epi_node sde_node MatPar_node wtot substrate_t True > /path/to/output_file.txt

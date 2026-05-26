@@ -89,6 +89,10 @@
 <div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="k">set</span><span class="w"> </span>WB_tool<span class="k">(</span><span class="nv">sde</span>,<span class="w"> </span>epilogue<span class="k">)</span><span class="w"> </span><span class="k">{</span><span class="nb">exec</span><span class="w"> </span>tdx<span class="w"> </span><span class="o">--</span>tdr2tdr<span class="w"> </span><span class="o">-</span>v16<span class="w"> </span>n@node@_msh.tdr<span class="w"> </span>n@node@_msh.tdr<span class="k">}</span>
 </pre></div>
 </div>
+<p>There are two methods for running the code from within Sentaurus. The first method calls the LCMatrix_pyt.py script from a Sentaurus Python workbench tool. This uses the version of Python that came packaged with Sentaurus (gPython). An alternative method is to run the code from your chosen Python interpreter using a TCL script. The TCL script can be s single line calling a desired version of Python, from a virtual environment for example, and may look something like the following:</p>
+<div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="nb">exec</span><span class="w"> </span><span class="o">/</span>path<span class="o">/</span>to<span class="o">/</span>python<span class="o">/</span>env<span class="o">/</span>bin<span class="o">/</span>python3<span class="w"> </span><span class="o">/</span>path<span class="o">/</span>to<span class="o">/</span>LCMatrix_pyt.py<span class="w"> </span>@LC_filename@<span class="w"> </span>@node<span class="o">|</span>epi@<span class="w"> </span>@node<span class="o">|</span>sde@<span class="w"> </span>@node<span class="o">|</span>MatPar@<span class="w"> </span>@wtot@<span class="w"> </span>@substrate_t@<span class="w"> </span>True<span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">/</span>path<span class="o">/</span>to<span class="o">/</span>output_file.txt
+</pre></div>
+</div>
 </section>
 </section>
 
