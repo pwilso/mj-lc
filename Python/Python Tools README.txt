@@ -1,11 +1,11 @@
-This is a collection of Python modules, originally put together by Matt Wilkins.
+This is a collection of Python modules, originally put together by Matt Wilkins (and now being updated and maintained by Paige Wilson.)
 
 The modules should work under both Windows and Linux. They were developed using Python 2.7
-which is more widely used than the newer Python 3.x. Expect some minor incompatibilities if using Python 3.x.
+which is more widely used than the newer Python 3.x. This code has since been upgraded to work with Python 3.x.
 
 The tools may require any of these packages:
 
-Python 2.7	Core Python interpreter and base libraries
+Python 3.x	Core Python interpreter and base libraries
 numpy		Numerical library (matrices, linear algebra, etc)
 scipy		Scientific math library (ODEs, numerical integration, optimization, root solving, etc.)
 matplotlib	High quality plotting, capabilities similar to Matlab
