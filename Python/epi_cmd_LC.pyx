@@ -331,7 +331,7 @@ class epifile:
         for l in self.layers:
                 if l.name.encode('ascii') in regions:
                         # build list of unique y-values in the region.
-                        l.yvalues = blist.sortedset()  # removed blist since installation with pip has compatibility issues with setuptools and python3.13
+                        #l.yvalues = blist.sortedset()  # removed blist since installation with pip has compatibility issues with setuptools and python3.13
                         l.yvalues = set()                 
                         elements = t.collection[u'geometry_0'][regions[l.name.encode('ascii')]][u'elements_0'][()]
                         elem = iter(elements)

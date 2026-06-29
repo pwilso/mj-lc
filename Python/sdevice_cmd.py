@@ -49,7 +49,7 @@ class sdevice_file:
 						if len(row) == 3:
 							if row[0] != '*' and row[0] != '{' and row[0] != 'Formula' and row[0] != 'NumericalTable(' and row[0] != 'TableInterpolation':
 								par['TableODB']['wl'].append(float(row[0]))
-                                #print(par['TableODB']['wl'])    
+								#print(par['TableODB']['wl'])	 
 								par['TableODB']['n'].append(float(row[1]))
 								par['TableODB']['k'].append(float(row[2].rstrip(';')))
 						row = r.__next__()

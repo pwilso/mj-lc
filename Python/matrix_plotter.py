@@ -278,7 +278,7 @@ def plot_LCMatrix(folder,filename,num_segs,wtot):
     
     
 #------------------------------------------------------------------------------
-def plot_nkData(e):
+def plot_nkData(e, save_location):
     """
     Plots the nk data used in the luminescent coupling simulation.
 
@@ -328,3 +328,4 @@ def plot_nkData(e):
     ax2_1.legend()
     ax2_2.legend()
     ax2_1.legend()
+    fig.savefig(save_location)                          
