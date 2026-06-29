@@ -14,13 +14,13 @@ import numpy as np
 cimport numpy as np
 import sdevice_cmd
 from scipy.interpolate import interp1d, UnivariateSpline
-from scipy.integrate import trapz
+from scipy.integrate import trapezoid as trapz
 from math import cos, sin, exp, pi
 import h5py
 import re
 import tdr
 cimport  tmm.tmm_core_mw as tmm
-import blist
+#import blist
 from tables import *
 
 
@@ -29,6 +29,7 @@ cdef double h = 6.626e-34      # J.s
 cdef double c0 = 299792458.0   # m/s
 cdef double kb = 1.3806488e-23 # J/K
 
+test_var = 0            
 # for collecting all the data and storing it in a pytable
 class LCData_Pos(IsDescription):
     zA = Float64Col()
@@ -70,7 +71,7 @@ cdef class epilayer:
     cdef public double doping, Eg_300, xmole, ymole
     cdef public double ytop, ybot, thickness, Brad
     cdef public name, material, material_type, materialfile, ext
-    cdef public par, index_n, index_k, nk, nk_data
+    cdef public par, index_n, index_k, nk_data
     cdef public np.ndarray E_list,  alpha_list, wl_list, n_list
     cdef public double E_min, E_max, wl_min, wl_max, wl_emission_min, wl_emission_max
     cdef public double S_hat_den
@@ -178,7 +179,7 @@ class epifile:
                             row = self.r.next()
                             replayers = []
                             while row[0].lstrip('\t') != '$end':
-                                    replayer = epilayer(row[0].lstrip('\t'),row[1],row[2],row[3], row[4], row[5], row[6],0)
+                                    replayer = epilayer(row[0].lstrip('\t'),row[1].lstrip('\t'),row[2],row[3], row[4], row[5], row[6],0)
                                     replayers.append(replayer)
                                     row = self.r.next()
                             for i in range(N):
@@ -233,11 +234,14 @@ class epifile:
 		# set up n,k for tmm library
                 i.nk_data = []
                 for j in range(len(i.par['TableODB']['wl'])):
-                        i.nk_data.append( np.complex(i.par['TableODB']['n'][j], i.par['TableODB']['k'][j] ))
+                        i.nk_data.append( np.complex128(i.par['TableODB']['n'][j], i.par['TableODB']['k'][j] )) # updated np.complex to np.complex128 -pwils [2026-05-19]
                 if i.material == 'TaO': # want a constant interpolation for this material -pwils
                     i.index_n = interp1d(i.par['TableODB']['wl'], i.par['TableODB']['n'], kind='linear', bounds_error = False, fill_value = (np.real(i.nk_data[0]), np.real(i.nk_data[-1])))
                     i.index_k = interp1d(i.par['TableODB']['wl'], i.par['TableODB']['k'], kind='linear', bounds_error = False, fill_value = (np.imag(i.nk_data[0]), np.imag(i.nk_data[-1])))
                 else: # linear interpolation with linear extrapolation, a warning will be printed if the emission wavelengths are in an extrapolated region -pwils
+                    print('trying')
+                    print(i.material)
+                    print(i.name)
                     i.index_n = interp1d(i.par['TableODB']['wl'], i.par['TableODB']['n'], kind='linear', bounds_error = False, fill_value = 'extrapolate')
                     i.index_k = interp1d(i.par['TableODB']['wl'], i.par['TableODB']['k'], kind='linear', bounds_error = False, fill_value = 'extrapolate')
 
@@ -327,7 +331,8 @@ class epifile:
         for l in self.layers:
                 if l.name.encode('ascii') in regions:
                         # build list of unique y-values in the region.
-                        l.yvalues = blist.sortedset()
+                        l.yvalues = blist.sortedset()  # removed blist since installation with pip has compatibility issues with setuptools and python3.13
+                        l.yvalues = set()                 
                         elements = t.collection[u'geometry_0'][regions[l.name.encode('ascii')]][u'elements_0'][()]
                         elem = iter(elements)
                         size = elem.__next__()
@@ -343,6 +348,7 @@ class epifile:
                                        done = True
                 # overwrite calculated layer boundaries with values from mesh file
                 # avoids some problems due to roundoff errors.
+                l.yvalues = sorted(l.yvalues) # sorting the values since blist.sortedset was removed                                                                                    
                 l.ytop = l.yvalues[0]
                 l.ybot = l.yvalues[-1]					
                 print( '   ', l.name, ': ', len(l.yvalues), ' unique y-coords')
@@ -357,7 +363,7 @@ def calc_a(int li, int lk, double yA, double yB, data_list_TE,  data_list_TM,  e
                       cdef np.ndarray sin_th_list = np.sin(th_list)
                       cdef double yB0 = yB - e.layers[lk].ytop
 
-                      if use_gauss_quad == False: # the original trapzoidal rule calculation for the angle integration
+                      if use_gauss_quad == False: # the original trapezoidal rule calculation for the angle integration
                           for E_i in range(len(E_list)):
                                for th_i in range(len(th_list)-1):
                                       P0_list[th_i]  = tmm.position_resolved_a(lk, yB0, data_list_TE[E_i][th_i]) * sin_th_list[th_i]
