@@ -1,21 +1,19 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Common Errors and Possible Solutions &#8212; LC_Docs 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d7e2fa82" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css?v=2296cfae" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Differences and Changelog" href="differences_and_changelog.html" />
     <link rel="prev" title="Publications" href="publications.html" />
    
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
@@ -26,12 +24,18 @@
   
   
 
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="differences_and_changelog.html" title="Differences and Changelog"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="publications.html" title="Publications"
              accesskey="P">previous</a> |</li>
@@ -46,7 +50,7 @@
           <div class="body" role="main">
             
   <section id="common-errors-and-possible-solutions">
-<h1>Common Errors and Possible Solutions<a class="headerlink" href="#common-errors-and-possible-solutions" title="Permalink to this heading">¶</a></h1>
+<h1>Common Errors and Possible Solutions<a class="headerlink" href="#common-errors-and-possible-solutions" title="Link to this heading">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="#first-compilation"><span class="std std-ref">Error when compiling changed Cython files for the first time through Sentaurus.</span></a></p></li>
 <li><p><a class="reference internal" href="#wake-up"><span class="std std-ref">Error when trying to run a LCMatrix.py file that previously compiled fine.</span></a></p></li>
@@ -54,7 +58,7 @@
 <li><p><a class="reference internal" href="#other-compiler"><span class="std std-ref">Other Cython and Compiler Errors</span></a></p></li>
 </ul>
 <section id="error-when-compiling-changed-cython-files-for-the-first-time-through-sentaurus">
-<span id="first-compilation"></span><h2>Error when compiling changed Cython files for the first time through Sentaurus.<a class="headerlink" href="#error-when-compiling-changed-cython-files-for-the-first-time-through-sentaurus" title="Permalink to this heading">¶</a></h2>
+<span id="first-compilation"></span><h2>Error when compiling changed Cython files for the first time through Sentaurus.<a class="headerlink" href="#error-when-compiling-changed-cython-files-for-the-first-time-through-sentaurus" title="Link to this heading">¶</a></h2>
 <p><strong>Message:</strong></p>
 <p>The first time you run the program (or if you changed anything in the Cython files) it may throw some warnings which are ignored when running in the terminal but cause Sentaurus to exit with an error.</p>
 <p>The error will look like a compiler error (something with “gcc” in the error message).</p>
@@ -65,19 +69,19 @@
 </div>
 <p>This ensures that tmm_core_mw.pyx has been properly updated/compiled.</p>
 <p>Next, open a python terminal.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)),</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;Python&#39;</span><span class="p">))</span> <span class="c1"># may need to adjust depending on your cwd</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)),</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;Python&#39;</span><span class="p">,</span> <span class="s1">&#39;tmm&#39;</span><span class="p">))</span>
-<span class="kn">import</span> <span class="nn">pyximport</span><span class="p">;</span> <span class="n">pyximport</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">epi_cmd_LC</span>
-<span class="kn">import</span> <span class="nn">tmm.tmm_core_mw</span> <span class="k">as</span> <span class="nn">tmm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyximport</span><span class="p">;</span> <span class="n">pyximport</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">epi_cmd_LC</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tmm.tmm_core_mw</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tmm</span>
 </pre></div>
 </div>
 <p>You’ll recognize this as just the first block of the LCMatrix.py script. Running through a Python terminal first allows messages generated by the compiler to be ignored. Subsequent runs will not generated these messages allowing the Sentaurus program to proceed.</p>
 </section>
 <section id="error-when-trying-to-run-a-lcmatrix-py-file-that-previously-compiled-fine">
-<span id="wake-up"></span><h2>Error when trying to run a LCMatrix.py file that previously compiled fine.<a class="headerlink" href="#error-when-trying-to-run-a-lcmatrix-py-file-that-previously-compiled-fine" title="Permalink to this heading">¶</a></h2>
+<span id="wake-up"></span><h2>Error when trying to run a LCMatrix.py file that previously compiled fine.<a class="headerlink" href="#error-when-trying-to-run-a-lcmatrix-py-file-that-previously-compiled-fine" title="Link to this heading">¶</a></h2>
 <p><strong>Message:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">epi_cmd_LC</span><span class="o">.</span><span class="n">c</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span> <span class="n">error</span><span class="p">:</span> <span class="c1">#error Do not use this file, it is the result of a failed Cython compilation.</span>
 <span class="c1">#error Do not use this file, it is the result of a failed Cython compilation.</span>
@@ -95,18 +99,18 @@
 <p>Rerun cythonize on the .pyx file. It will hopefully generate outputs and recompile the file fully now.</p>
 </section>
 <section id="troubleshooting-tricky-python-packages">
-<span id="py-pkg"></span><h2>Troubleshooting tricky Python packages<a class="headerlink" href="#troubleshooting-tricky-python-packages" title="Permalink to this heading">¶</a></h2>
+<span id="py-pkg"></span><h2>Troubleshooting tricky Python packages<a class="headerlink" href="#troubleshooting-tricky-python-packages" title="Link to this heading">¶</a></h2>
 <p><strong>Message:</strong></p>
 <p>Sometimes you may need to install a package separately from your usual Python environment. This could be due to compatibility issues with Sentaurus for example. In these cases it is possible to install a version of the module you need locally and then call it from within the Python script. Below is an example of how this is done for a Python module called “feather” which was installed using conda.</p>
 <p><strong>Solution:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">importlib</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
 <span class="n">spec</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="s2">&quot;/path/to/module/miniconda3/pkgs/feather-format-0.4.1-pyh9f0ad1d_0/site-packages/feather/__init__.py&quot;</span><span class="p">)</span>
 <span class="n">feather</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="other-cython-and-compiler-errors">
-<span id="other-compiler"></span><h2>Other Cython and Compiler Errors<a class="headerlink" href="#other-cython-and-compiler-errors" title="Permalink to this heading">¶</a></h2>
+<span id="other-compiler"></span><h2>Other Cython and Compiler Errors<a class="headerlink" href="#other-cython-and-compiler-errors" title="Link to this heading">¶</a></h2>
 <p><strong>Message:</strong></p>
 <p>The cythonize commands fail with the following error:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ne">AttributeError</span><span class="p">:</span> <span class="s1">&#39;PropertyScope&#39;</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s1">&#39;namespace_cname&#39;</span>
@@ -131,7 +135,7 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
@@ -149,6 +153,7 @@
 <ul>
   <li><a href="index.html">Documentation index</a><ul>
       <li>Previous: <a href="publications.html" title="previous chapter">Publications</a></li>
+      <li>Next: <a href="differences_and_changelog.html" title="next chapter">Differences and Changelog</a></li>
   </ul></li>
 </ul>
   <div role="note" aria-label="source link">
@@ -158,7 +163,7 @@
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -166,7 +171,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>

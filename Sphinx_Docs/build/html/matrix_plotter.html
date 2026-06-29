@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>matrix_plotter module &#8212; LC_Docs 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d7e2fa82" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css?v=2296cfae" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Lora:400' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">LC_Docs 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">matrix_plotter module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-matrix_plotter">
+<span id="matrix-plotter-module"></span><h1>matrix_plotter module<a class="headerlink" href="#module-matrix_plotter" title="Link to this heading">¶</a></h1>
+<p>Created on Mon Nov 14 13:30:20 2022</p>
+<p>&#64;author: pwilson3</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="matrix_plotter.create_labels">
+<span class="sig-prename descclassname"><span class="pre">matrix_plotter.</span></span><span class="sig-name descname"><span class="pre">create_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">materials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thicknesses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ybar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xbar_anchor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ybar_anchor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar_thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matrix_plotter.create_labels" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a bar to the top and right hand side of the re-absorption density
+contour plot to mark where different materials start and end.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>AXES OBJECT</em>) – The x and y axes, such as those produced from setup_simple_plot</p></li>
+<li><p><strong>labels</strong> (<em>LIST</em>) – The label associated with each section.</p></li>
+<li><p><strong>materials</strong> (<em>LIST</em>) – The material associated with each section (used to generate the colour.)</p></li>
+<li><p><strong>thicknesses</strong> (<em>LIST</em>) – The thickness of each region.</p></li>
+<li><p><strong>xbar</strong> (<em>BOOL</em><em>, </em><em>optional</em>) – Whether or not to include a bar along x. The default is True.</p></li>
+<li><p><strong>ybar</strong> (<em>BOOL</em><em>, </em><em>optional</em>) – Whether or not to include a bar along y. The default is True.</p></li>
+<li><p><strong>xbar_anchor</strong> (<em>FLOAT</em><em>, </em><em>optional</em>) – Controls position of the x-bar. The default is -0.15.</p></li>
+<li><p><strong>ybar_anchor</strong> (<em>FLOAT</em><em>, </em><em>optional</em>) – Controls position of the y-bar.. The default is 0.1.</p></li>
+<li><p><strong>bar_thickness</strong> (<em>FLOAT</em><em>, </em><em>optional</em>) – Thickness of the bars. The default is 0.1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="matrix_plotter.create_legend">
+<span class="sig-prename descclassname"><span class="pre">matrix_plotter.</span></span><span class="sig-name descname"><span class="pre">create_legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">materials</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matrix_plotter.create_legend" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p1</strong> (<em>FIGURE OBJECT</em>) – The main figure, such as that produced from setup_simple_plot</p></li>
+<li><p><strong>materials</strong> (<em>LIST</em>) – The material associated with each section (used to generate the colour.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="matrix_plotter.plot_LCMatrix">
+<span class="sig-prename descclassname"><span class="pre">matrix_plotter.</span></span><span class="sig-name descname"><span class="pre">plot_LCMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_segs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wtot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matrix_plotter.plot_LCMatrix" title="Link to this definition">¶</a></dt>
+<dd><p>Reads in the data generated from LCMatrix_pyt.py and plots it as a
+contour plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder</strong> (<em>STRING</em>) – Path to folder where data is stored</p></li>
+<li><p><strong>filename</strong> (<em>STRING</em>) – Name of the csv file (without the csv extension)</p></li>
+<li><p><strong>num_segs</strong> (<em>INTEGER</em>) – Number of segments in the multijunction device.</p></li>
+<li><p><strong>wtot</strong> (<em>FLOAT</em>) – Width of the device.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="matrix_plotter.plot_nkData">
+<span class="sig-prename descclassname"><span class="pre">matrix_plotter.</span></span><span class="sig-name descname"><span class="pre">plot_nkData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matrix_plotter.plot_nkData" title="Link to this definition">¶</a></dt>
+<dd><p>Plots the nk data used in the luminescent coupling simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>e</strong> (<em>epi_cmd_LC object</em>) – Generated with the command epi_cmd_LC.epifile(‘./results/nodes/’+ str(epi_node) + ‘/pp’+ str(epi_node) + ‘_epi.cmd’)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="matrix_plotter.setup_simple_plot">
+<span class="sig-prename descclassname"><span class="pre">matrix_plotter.</span></span><span class="sig-name descname"><span class="pre">setup_simple_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig_num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matrix_plotter.setup_simple_plot" title="Link to this definition">¶</a></dt>
+<dd><p>Sets up the figure and axes for a contour plot of the re-absorption density
+plotted against the re-absorption and emission locations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fig_num</strong> (<em>INTEGER</em>) – The figure number.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>p1</strong> (<em>FIGURE OBJECT</em>) – The main figure.</p></li>
+<li><p><strong>ax2</strong> (<em>FIGURE AXES</em>) – The x and y axes of the contour plot.</p></li>
+<li><p><strong>ax3</strong> (<em>FIGURE AXES</em>) – The colour bar for the re-absorption density.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="matrix_plotter.simple_matrix_plot">
+<span class="sig-prename descclassname"><span class="pre">matrix_plotter.</span></span><span class="sig-name descname"><span class="pre">simple_matrix_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Re-absorbtion</span> <span class="pre">density</span> <span class="pre">($\\mu</span> <span class="pre">m^{-1}}$)'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matrix_plotter.simple_matrix_plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plots the re-absorption density as a function of the emission and reabsorption
+locations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p1</strong> (<em>FIGURE OBJECT</em>) – The main figure, such as that produced from setup_simple_plot</p></li>
+<li><p><strong>ax2</strong> (<em>AXES OBJECT</em>) – The x and y axes, such as those produced from setup_simple_plot</p></li>
+<li><p><strong>ax3</strong> (<em>AXES OBJECT</em>) – The colourbar, such as that produced from setup_simple plot</p></li>
+<li><p><strong>x</strong> (<em>LIST</em>) – x-data (re-absorption location)</p></li>
+<li><p><strong>y</strong> (<em>LIST</em>) – y-data (emission location)</p></li>
+<li><p><strong>z</strong> (<em>LIST</em>) – z-data (re-absorption density)</p></li>
+<li><p><strong>tick_points</strong> (<em>INTEGER</em><em>, </em><em>optional</em>) – The divisions along a linearly scaled colourbar axes. If left empty the values are
+automatically generated from logmin and logmax and the scale will be logarithmic.
+Providing these values overrides logmin and logmax. The default is [].</p></li>
+<li><p><strong>logmin</strong> (<em>INTEGER</em><em>, </em><em>optional</em>) – Lower bound for the logarithmic colourbar scale (i.e. 10^logmin). The default is -4.</p></li>
+<li><p><strong>logmax</strong> (<em>INTEGER</em><em>, </em><em>optional</em>) – Upper bound for the logarithmic colourbar scale (i.e. 10^logmax). The default is 1.</p></li>
+<li><p><strong>barlabel</strong> (<em>STRING</em><em>, </em><em>optional</em>) – Colourbar label. The default is r’Re-absorbtion density ($mu m^{-1}}$)’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">matrix_plotter module</a><ul>
+<li><a class="reference internal" href="#matrix_plotter.create_labels"><code class="docutils literal notranslate"><span class="pre">create_labels()</span></code></a></li>
+<li><a class="reference internal" href="#matrix_plotter.create_legend"><code class="docutils literal notranslate"><span class="pre">create_legend()</span></code></a></li>
+<li><a class="reference internal" href="#matrix_plotter.plot_LCMatrix"><code class="docutils literal notranslate"><span class="pre">plot_LCMatrix()</span></code></a></li>
+<li><a class="reference internal" href="#matrix_plotter.plot_nkData"><code class="docutils literal notranslate"><span class="pre">plot_nkData()</span></code></a></li>
+<li><a class="reference internal" href="#matrix_plotter.setup_simple_plot"><code class="docutils literal notranslate"><span class="pre">setup_simple_plot()</span></code></a></li>
+<li><a class="reference internal" href="#matrix_plotter.simple_matrix_plot"><code class="docutils literal notranslate"><span class="pre">simple_matrix_plot()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation index</a><ul>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/matrix_plotter.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+  </body>
+</html>

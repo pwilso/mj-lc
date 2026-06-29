@@ -1,19 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Basic Usage &#8212; LC_Docs 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d7e2fa82" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css?v=2296cfae" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,12 +25,15 @@
   
   
 
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="right" >
           <a href="epi_functions_docs.html" title="&lt;no title&gt;"
              accesskey="N">next</a> |</li>
@@ -51,14 +51,14 @@
           <div class="body" role="main">
             
   <section id="basic-usage">
-<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this heading">¶</a></h1>
+<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">¶</a></h1>
 <p>This project consists of three main files that perform the TMM calculations and a handful of tools for plotting the outputs. These three files are:</p>
 <p><strong>LC_Matrix.py</strong>: This file is the main file the user will interact with. There is a header section (described below) where the user will enter all the information needed to control the inputs and outputs of the code.</p>
 <p><strong>epi_cmd_LC.pyx</strong>: Written in Cython, this file sets up the epitaxial layer structure for the calculation and extracts information about the materials. The average user should not need to change anything within this file.
 <em>N.B. This project was originally designed for use with Synopsys Sentaurus. As such it currently require epi, matpar, and sde files produced by Sentaurus to set up the structure.</em></p>
 <p><strong>tmm_mw.pyx</strong>: Written in Cython, this file performs many of the functions required for the TMM calculation. The average user should not need to change anything within this file.</p>
 <section id="set-up">
-<h2>Set-Up<a class="headerlink" href="#set-up" title="Permalink to this heading">¶</a></h2>
+<h2>Set-Up<a class="headerlink" href="#set-up" title="Link to this heading">¶</a></h2>
 <p>The header section of LC_Matrix.py is as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">### USER INPUT ################################################################ #!!!</span>
 <span class="n">run_method</span> <span class="o">=</span> <span class="s2">&quot;CMD_or_TCL&quot;</span>
@@ -139,7 +139,7 @@
 <p>The thickness of the substrate (or last layer of the device.) Technically, the last layer in the calculation has semi-infinite thickness. This variable specifies the bottom layer in the Sentaurus project. If it is equal to 0.0, then a semi-infinite layer of gold is set as the last layer in the TMM calculation to simulate a planar back-reflector. If the value is finite then this is the thickness of the last finite layer in the Sentaurus project. A semi-infinite layer of InP <strong>(!!!)</strong> will be appended to the end of the layer stack in the TMM calculation. Additional layers can be added by setting the <strong>back_mat (!!!)</strong> list.</p>
 </section>
 <section id="the-pmi-interface-working-with-sentaurus">
-<h2>The PMI Interface (Working with Sentaurus)<a class="headerlink" href="#the-pmi-interface-working-with-sentaurus" title="Permalink to this heading">¶</a></h2>
+<h2>The PMI Interface (Working with Sentaurus)<a class="headerlink" href="#the-pmi-interface-working-with-sentaurus" title="Link to this heading">¶</a></h2>
 <p>The python program LCMatrix_pyt.py produces the coupling matrix which will be read by Sentaurus using the custom physical model interface: OpticalCoupling_Recombination.
 OpticalCoupling_Recombination is implemented in Sentaurus through a C++ file compiled using Sentaurus’ CMI compiler.
 The g++ compiler used by Sentaurus to compile its tools must match the compiler used by CMI exactly. For example, version vS_2021.06 works with g++ 9.2.0.
@@ -220,7 +220,7 @@ make
 </ol>
 </section>
 <section id="running">
-<h2>Running<a class="headerlink" href="#running" title="Permalink to this heading">¶</a></h2>
+<h2>Running<a class="headerlink" href="#running" title="Link to this heading">¶</a></h2>
 <p>There are a few different ways to run the program: from within a Python IDE, using Python from the command line, using a Python node from within Sentaurus, or using a TCL script from within Sentaurus.</p>
 <p>Since the program was written to work with Sentaurus in mind if you are running from an external Python environment you will need to set <cite>run_cmdline = True</cite> and set <cite>epi_node</cite>, <cite>sde_node</cite>, and <cite>MatPar_node</cite> manually. If you are running from within a Sentaurus Python environment then set <cite>run_method = Sentaurus</cite> amd the necessary values should be filled automatically. If you are running from an IDE then <cite>epi_node</cite>, <cite>sde_node</cite>, and <cite>MatPar_node</cite> will ned to be set manually at the top of the script. If you are running from either the command line directly or using a TCL script within Sentaurus then the values are set using system arguments:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">/path/to/python/env/bin/python3 /path/to/LCMatrix_pyt.py LC_filename epi_node sde_node MatPar_node wtot substrate_t True &gt; /path/to/output_file.txt</span>
@@ -234,7 +234,7 @@ make
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
@@ -261,7 +261,7 @@ make
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -269,7 +269,7 @@ make
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>tmm package &#8212; LC_Docs 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d7e2fa82" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css?v=2296cfae" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Lora:400' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">LC_Docs 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tmm package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="tmm-package">
+<h1>tmm package<a class="headerlink" href="#tmm-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-tmm.color">
+<span id="tmm-color-module"></span><h2>tmm.color module<a class="headerlink" href="#module-tmm.color" title="Link to this heading">¶</a></h2>
+<p>Functions to calculate the color of a multilayer thin film under reflected
+light. A perfect mirror will look white, because we imagine seeing the white
+light source (“illuminant”) reflected in it. A half-reflective mirror will be
+gray, a non-reflective surface will be black, etc. See tmm.examples.sample5()
+for a few example calculations for how this is used.</p>
+<p>For functions that require an illuminant, the most common choice would be to
+use colorpy.illuminants.get_illuminant_D65(), which approximates a phase of
+natural daylight. See <a class="reference external" href="http://en.wikipedia.org/wiki/Illuminant_D65">http://en.wikipedia.org/wiki/Illuminant_D65</a> .</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="tmm.color.calc_color">
+<span class="sig-prename descclassname"><span class="pre">tmm.color.</span></span><span class="sig-name descname"><span class="pre">calc_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_warnings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmm.color.calc_color" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the color in various representations.</p>
+<p>spectrum is the output of calc_spectrum.</p>
+<dl class="simple">
+<dt>scale is the scaling method. Possibilities are:</dt><dd><ul class="simple">
+<li><p>scale=None means don’t scale. This is usually what you want, bucause
+the illuminant should be pre-scaled in an appropriate way.
+(Specifically, it’s scaled to get Y=1 for a perfect reflector.)</p></li>
+<li><p>scale=’Y1’ means that the intensity is increased or decreased in
+order to set Y (the luminance) to 1. So you can get white but not gray,
+you can get orange but not brown, etc.</p></li>
+<li><p>scale=0.789 multiplies X,Y,Z by 0.789. Any number &gt; 0 is OK.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns a dictionary with rgb, xy, xyY, and XYZ. Of these, rgb is sRGB, the
+standard for modern displays and printers (yes, gamma correction is
+properly taken into account, see colorpy.colormodels source code).
+xy, xyY and XYZ are defined as in
+<a class="reference external" href="http://en.wikipedia.org/wiki/CIE_1931_color_space">http://en.wikipedia.org/wiki/CIE_1931_color_space</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmm.color.calc_reflectances">
+<span class="sig-prename descclassname"><span class="pre">tmm.color.</span></span><span class="sig-name descname"><span class="pre">calc_reflectances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_fn_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">th_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'narrow'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmm.color.calc_reflectances" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the reflection spectrum of a thin-film stack.</p>
+<p>n_fn_list[m] should be a function that inputs wavelength in nm and
+outputs refractive index of the m’th layer. In other words,
+n_fn_list[2](456) == 1.53 + 0.4j mans that layer #2 has a refractive index
+of 1.53 + 0.4j at 456nm. These functions could be defined with
+scipy.interpolate.interp1d() for example.</p>
+<p>pol, d_list and th_0 are defined as in tmm.coh_tmm … but d_list
+MUST be in units of nanometers</p>
+<p>spectral_range can be ‘full’ if all the functions in n_fn_list can take
+wavelength arguments between 360-830nm; or ‘narrow’ if some or all require
+arguments only in the range 400-700nm. The wavelengths outside the
+‘narrow’ range make only a tiny difference to the color, because they are
+almost invisible to the eye. If spectral_range is ‘narrow’, then the n(400)
+values are used for 360-400 and n(700) for 700-830nm</p>
+<p>Returns a 2-column array where the first column is wavelength in nm
+(360,361,362,…,830) and the second column is reflectivity (from 0
+to 1, where 1 is a perfect mirror). This range is chosen to be
+consistent with colorpy.illuminants. See  colorpy.ciexyz.start_wl_nm etc.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmm.color.calc_spectrum">
+<span class="sig-prename descclassname"><span class="pre">tmm.color.</span></span><span class="sig-name descname"><span class="pre">calc_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reflectances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">illuminant</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmm.color.calc_spectrum" title="Link to this definition">¶</a></dt>
+<dd><ul class="simple">
+<li><p>reflectances is the output of calc_reflec_spec()</p></li>
+<li><p>illuminant is a 2D numpy arrays, with one row for each wavelength,
+with the first column holding the wavelength in nm, and the
+second column the intensity. This is the form returned by the
+functions in colorpy.illuminants.  It is normally assumed that
+illuminant is normalized so that Y=1.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmm.color.plot_reflectances">
+<span class="sig-prename descclassname"><span class="pre">tmm.color.</span></span><span class="sig-name descname"><span class="pre">plot_reflectances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reflectances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'temp_plot.png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Reflectance'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Fraction</span> <span class="pre">reflected'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmm.color.plot_reflectances" title="Link to this definition">¶</a></dt>
+<dd><p>Makes nice colored plot of reflectances. reflectances is the output of
+calc_reflectances(…)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tmm.color.plot_spectrum">
+<span class="sig-prename descclassname"><span class="pre">tmm.color.</span></span><span class="sig-name descname"><span class="pre">plot_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'temp_plot.png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Reflected</span> <span class="pre">light</span> <span class="pre">under</span> <span class="pre">illumination'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Intensity</span> <span class="pre">(a.u.)'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tmm.color.plot_spectrum" title="Link to this definition">¶</a></dt>
+<dd><p>Makes nice colored plot of the reflected color spectrum you see under a
+certain illuminant. spectrum is the output of
+calc_spectrum(…)</p>
+</dd></dl>
+
+</section>
+<section id="tmm-setup-module">
+<h2>tmm.setup module<a class="headerlink" href="#tmm-setup-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="tmm-tests-module">
+<h2>tmm.tests module<a class="headerlink" href="#tmm-tests-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="tmm-tmm-core-module">
+<h2>tmm.tmm_core module<a class="headerlink" href="#tmm-tmm-core-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="tmm-tmm-core-mw-module">
+<h2>tmm.tmm_core_mw module<a class="headerlink" href="#tmm-tmm-core-mw-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="tmm-tmm-core-mw-py3-module">
+<h2>tmm.tmm_core_mw_py3 module<a class="headerlink" href="#tmm-tmm-core-mw-py3-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-tmm">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tmm" title="Link to this heading">¶</a></h2>
+<p>tmm - A transfer-matrix method optics package, for calculating
+reflection, transmission, absorption, and other relevant aspects of thin
+and thick multilayer (or single-layer) films.</p>
+<p>Written by Steven Byrnes, <a class="reference external" href="http://sjbyrnes.com">http://sjbyrnes.com</a> . Package lives at
+<a class="reference external" href="https://pypi.python.org/pypi/tmm">https://pypi.python.org/pypi/tmm</a></p>
+<p>Released under MIT license (Expat).</p>
+<p>For detailed derivations of the formulas, see manual.pdf. For the
+various functions and their explanations and syntaxes, browse tmm_core,
+particularly the docstrings of all the functions. Most important of
+these are:</p>
+<p>tmm.coh_tmm(…) – the transfer-matrix-method calculation in the coherent
+case (i.e. thin films)</p>
+<p>tmm.inc_tmm(…) – the transfer-matrix-method calculation in the incoherent
+case (i.e. films tens or hundreds of wavelengths thick, or whose
+thickness is not very uniform.</p>
+<p>In tmm.examples you will find some sample calculations and plots.</p>
+<p>In tmm.tests you will find various tests that the package is coded
+correctly.</p>
+<p>In tmm.colors you will find extra functions for calculating the color of a
+multilayer thin film under reflected light.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">tmm package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-tmm.color">tmm.color module</a><ul>
+<li><a class="reference internal" href="#tmm.color.calc_color"><code class="docutils literal notranslate"><span class="pre">calc_color()</span></code></a></li>
+<li><a class="reference internal" href="#tmm.color.calc_reflectances"><code class="docutils literal notranslate"><span class="pre">calc_reflectances()</span></code></a></li>
+<li><a class="reference internal" href="#tmm.color.calc_spectrum"><code class="docutils literal notranslate"><span class="pre">calc_spectrum()</span></code></a></li>
+<li><a class="reference internal" href="#tmm.color.plot_reflectances"><code class="docutils literal notranslate"><span class="pre">plot_reflectances()</span></code></a></li>
+<li><a class="reference internal" href="#tmm.color.plot_spectrum"><code class="docutils literal notranslate"><span class="pre">plot_spectrum()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tmm-setup-module">tmm.setup module</a></li>
+<li><a class="reference internal" href="#tmm-tests-module">tmm.tests module</a></li>
+<li><a class="reference internal" href="#tmm-tmm-core-module">tmm.tmm_core module</a></li>
+<li><a class="reference internal" href="#tmm-tmm-core-mw-module">tmm.tmm_core_mw module</a></li>
+<li><a class="reference internal" href="#tmm-tmm-core-mw-py3-module">tmm.tmm_core_mw_py3 module</a></li>
+<li><a class="reference internal" href="#module-tmm">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation index</a><ul>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tmm.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+  </body>
+</html>

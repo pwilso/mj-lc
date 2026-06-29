@@ -22,6 +22,8 @@ MJ-LC (MultiJunction Luminescent Coupling) calculates the relationship between a
    publications
    errors_and_solutions
    differences_and_changelog
+   
+   modules
 
 Indices and tables
 ==================

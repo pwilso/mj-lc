@@ -1,19 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Installation &#8212; LC_Docs 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/nameko.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d7e2fa82" />
+    <link rel="stylesheet" type="text/css" href="_static/nameko.css?v=2296cfae" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Basic Usage" href="basic_usage.html" />
@@ -27,12 +24,15 @@
   
   
 
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="right" >
           <a href="basic_usage.html" title="Basic Usage"
              accesskey="N">next</a> |</li>
@@ -50,11 +50,11 @@
           <div class="body" role="main">
             
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <p>The project can be run as a standalone project or in conjunction with a Synopsys Sentaurus simulation. Python is required in both cases.</p>
 <p>Compatibility with different Python versions and different Sentaurus versions is important. We have successfully implemented the code with Python v3.6.8 and with Python v3.13.5. Significant changes affecting installation and package management occured between these two versions so we provide two versions of the code with minor changes to each. Compatibility between different Sentaurus versions can also impact the way the code is implemented. We provide some troubleshooting advice for these concerns. The code has been successfully implemented with Sentaurus versions S-2021.06 and U-2022.12-SP1.</p>
 <section id="python-packages">
-<h2>Python Packages<a class="headerlink" href="#python-packages" title="Permalink to this heading">¶</a></h2>
+<h2>Python Packages<a class="headerlink" href="#python-packages" title="Link to this heading">¶</a></h2>
 <p>The Python environment requires the Python.h header files in order to compile the Cython extensions. Ensure that these are installed on your system (using the command <em>sudo apt install python3-dev</em> or similar) or by building your Python environment from source.</p>
 <p>We recommend the user create a virtual environment and install the necessary python packages via the requirements.txt file. For example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir venvs</span>
@@ -66,7 +66,7 @@
 </div>
 </section>
 <section id="compiling-with-cython">
-<h2>Compiling with Cython<a class="headerlink" href="#compiling-with-cython" title="Permalink to this heading">¶</a></h2>
+<h2>Compiling with Cython<a class="headerlink" href="#compiling-with-cython" title="Link to this heading">¶</a></h2>
 <p>The <em>epi_cmd_LC.pyx</em> and the <em>tmm_core_mw.pyx</em> files must be compiled with Cython before the program can be successfully run.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cythonize /path/to/Python/tmm/tmm_core_mw.pyx</span>
 <span class="go">cythonize /path/to/Python/epi_cmd_LC.pyx</span>
@@ -74,7 +74,7 @@
 </div>
 </section>
 <section id="integration-with-sentuarus">
-<h2>Integration with Sentuarus<a class="headerlink" href="#integration-with-sentuarus" title="Permalink to this heading">¶</a></h2>
+<h2>Integration with Sentuarus<a class="headerlink" href="#integration-with-sentuarus" title="Link to this heading">¶</a></h2>
 <p>Since this code was originally written for exclusive use with Sentaurus even running the program from the terminal or a Python IDE requires some initial Sentaurus integration as described in <a class="reference internal" href="basic_usage.html"><span class="doc">Basic Usage</span></a>.</p>
 <p>The Sentaurus mesh output (usually named <em>n##_msh.tdr</em>) may be generated as version 16 or version 17 depending on the Sentaurus version. Version 16 is required in order for the file format to be recognized as HDF5 and parsable by the h5py functions. To check which version has been produced you can run the following in the terminal:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">file /path/to/n##_msh.tdr</span>
@@ -101,7 +101,7 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
@@ -128,7 +128,7 @@
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -136,7 +136,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
