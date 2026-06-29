@@ -36,17 +36,20 @@ class sdevice_file:
 						row = r.__next__()
 					# print 'Bandgap', par['Bandgap']
 
-				elif row[0] == 'ComplexRefractiveIndex': #TableODB no longer supported changing to Complex Refractive Index table format pwils
+				#TableODB no longer supported changing to Complex Refractive Index table format pwils
+				# Some files still call TableODB. Re-implementing the TableODB format so both are supported -pwils [20260626] 
+				elif row[0] == 'ComplexRefractiveIndex' or row[0] == "TableODB":                                                   
 					# Found TableODB section
 					par['TableODB'] = dict()
 					par['TableODB']['wl'] = []
 					par['TableODB']['n'] = []
 					par['TableODB']['k'] = []
 					row = r.__next__()
-					while row != [')']: # Changed } to ) as complex refractive index is now in a numeric table pwils
+					while [')'] and row != ['}']: # Changed } to ) as complex refractive index is now in a numeric table pwils ... added or statement
 						if len(row) == 3:
 							if row[0] != '*' and row[0] != '{' and row[0] != 'Formula' and row[0] != 'NumericalTable(' and row[0] != 'TableInterpolation':
 								par['TableODB']['wl'].append(float(row[0]))
+                                #print(par['TableODB']['wl'])    
 								par['TableODB']['n'].append(float(row[1]))
 								par['TableODB']['k'].append(float(row[2].rstrip(';')))
 						row = r.__next__()
@@ -77,7 +80,14 @@ class sdevice_file:
 		assert 'beta' in bg
 		assert 'Tpar' in bg
 
-		Eg = bg['Eg0'] + bg['alpha']*(bg['Tpar']**2)/(bg['Tpar']+bg['beta']) - bg['alpha']*(T**2)/(T+bg['beta'])
+		# Division by zero may occur if Tpar or beta = 0, if alpha also = 0 then result should be Eg0 not undefined
+		try:
+			Eg = bg['Eg0'] + bg['alpha']*(bg['Tpar']**2)/(bg['Tpar']+bg['beta']) - bg['alpha']*(T**2)/(T+bg['beta'])
+		except ZeroDivisionError:
+			if bg['alpha'] == 0:
+				Eg = bg['Eg0']
+			else:
+				print('***Warning: Division by zero in Eg_T() function. Please doublecheck Bandgap parameters in ', self.material)                                                                                        
 		return Eg
 		
 		
