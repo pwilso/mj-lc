@@ -239,9 +239,6 @@ class epifile:
                     i.index_n = interp1d(i.par['TableODB']['wl'], i.par['TableODB']['n'], kind='linear', bounds_error = False, fill_value = (np.real(i.nk_data[0]), np.real(i.nk_data[-1])))
                     i.index_k = interp1d(i.par['TableODB']['wl'], i.par['TableODB']['k'], kind='linear', bounds_error = False, fill_value = (np.imag(i.nk_data[0]), np.imag(i.nk_data[-1])))
                 else: # linear interpolation with linear extrapolation, a warning will be printed if the emission wavelengths are in an extrapolated region -pwils
-                    print('trying')
-                    print(i.material)
-                    print(i.name)
                     i.index_n = interp1d(i.par['TableODB']['wl'], i.par['TableODB']['n'], kind='linear', bounds_error = False, fill_value = 'extrapolate')
                     i.index_k = interp1d(i.par['TableODB']['wl'], i.par['TableODB']['k'], kind='linear', bounds_error = False, fill_value = 'extrapolate')
 
@@ -402,7 +399,7 @@ def calc_a(int li, int lk, double yA, double yB, data_list_TE,  data_list_TM,  e
                       return P
 
 def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, P_list, integrate_theta_first,
-            h5_filename, use_gauss_quad = False, include90 = True, wtot = 1, write_H5 = True):
+            h5_filename, use_gauss_quad = False, include90 = True, wtot = 1, write_H5 = True, suppress_abs_err_msg = False):
     # """
     # Updated version of calc_a function. Currently being used to test bringing
     # the absor function integral (sum) to 1 over all given zB. Instead of a 
@@ -597,12 +594,14 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                     back_loss = 0.5*(b_loss_TE + b_loss_TM)
                     ph_loss = front_loss + back_loss #!!!
 
-                    if abs(1 - (ph_loss + ph_absorbed)) >= 0.3:
-                    #print('divided list 2, x:', x_vals)
+                    if suppress_abs_err_msg == False:                                 
+                        if abs(1 - (ph_loss + ph_absorbed)) >= 0.3:
+                        #print('divided list 2, x:', x_vals)
                 # print(len(x_vals))
                 #print('divided list 2, P', P_vals)
                 # print(len(P_vals))
-                # P_list_int[index] = trapz(P_vals, x = x_vals)                    print('*** Warning: sum of transmitted and absorbed photons != 1.')
+                # P_list_int[index] = trapz(P_vals, x = x_vals)                    
+                        print('*** Warning: sum of transmitted and absorbed photons != 1.')
                         print('    yA = {0} theta = {1} E = {2}'.format(yA, th_list[th_i], E_list[E_i]))
                         #print('    all_a_TE:')
                         #print(list(all_a_TE))
