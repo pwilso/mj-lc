@@ -45,7 +45,7 @@ class sdevice_file:
 					par['TableODB']['n'] = []
 					par['TableODB']['k'] = []
 					row = r.__next__()
-					while [')'] and row != ['}']: # Changed } to ) as complex refractive index is now in a numeric table pwils ... added or statement
+					while row != [')'] and row != ['}']: # Changed } to ) as complex refractive index is now in a numeric table pwils ... added or statement
 						if len(row) == 3:
 							if row[0] != '*' and row[0] != '{' and row[0] != 'Formula' and row[0] != 'NumericalTable(' and row[0] != 'TableInterpolation':
 								par['TableODB']['wl'].append(float(row[0]))
