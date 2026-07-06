@@ -99,7 +99,7 @@ cdef list_snell_li(np.ndarray[complex, ndim=1, negative_indices=False] n_list, c
     #give different results e.g. for arcsin(2).)
     #Use real_if_close because e.g. arcsin(2 + 1e-17j) is very different from
     #arcsin(2) due to branch cut
-    return sp.arcsin(np.real_if_close(n_list[li]*np.sin(th_i) / n_list))
+    return np.arcsin(np.real_if_close(n_list[li]*np.sin(th_i) / n_list))
 
 
 cdef complex interface_r(int polarization, complex n_i, complex n_f, complex th_i, complex th_f):
@@ -156,7 +156,7 @@ cdef get_k_vec(complex nk, double lambda0, double phi):
     # Quadratic formula coefficients
     cdef double a = 1.0
     cdef double b = (4.0*pi*pi/(lambda0*lambda0))*(nk.real*nk.real - nk.imag*nk.imag)
-    cdef  double c = - (4.0*pi*pi*nk.real*nk.imag/(lambda0*lambda0*sp.cos(phi)) )**2.
+    cdef  double c = - (4.0*pi*pi*nk.real*nk.imag/(lambda0*lambda0*np.cos(phi)) )**2.
 
     # Two roots of the quadratic eq.
     cdef complex k2_1 = (-b + sqrt(b*b -4.0*a*c))/(2.0*a)
@@ -177,19 +177,19 @@ cdef get_k_vec(complex nk, double lambda0, double phi):
 
     cdef double k1_mag
     if k2_mag != 0.:
-        k1_mag = (4.0*pi*pi*nk.real*nk.imag/(lambda0*lambda0*sp.cos(phi)*k2_mag)).real
+        k1_mag = (4.0*pi*pi*nk.real*nk.imag/(lambda0*lambda0*np.cos(phi)*k2_mag)).real
     else:
         # k vector is entirely real.
         k1_mag = (2.0*pi*nk.real/lambda0) # was squared, removed **2 -pwils
 
-    cdef np.ndarray[double, ndim=2, negative_indices=False] k1 = np.array([[k1_mag*sp.sin(phi),k1_mag*sp.cos(phi)]], dtype=float).T
+    cdef np.ndarray[double, ndim=2, negative_indices=False] k1 = np.array([[k1_mag*np.sin(phi),k1_mag*np.cos(phi)]], dtype=float).T
     cdef np.ndarray[double, ndim=2, negative_indices=False] k2 = np.array([[0.0, k2_mag]], dtype=float).T
 
     cdef np.ndarray[complex, ndim=2, negative_indices=False] k_vec = np.array(k1 + 1.0j*k2, dtype=complex)
 
     # complex propagation angle.  |k_vec||y_hat|cos(theta) = k_vec.y_hat
     cdef complex costheta=np.dot(k_vec.T, np.array([[0.0,1.0]]).T)[0,0]/sqrt(np.dot(k_vec.T,k_vec)[0,0])
-    cdef complex new_theta = sp.arccos(costheta)
+    cdef complex new_theta = np.arccos(costheta)
 
     return k_vec*1e-6, new_theta
 
@@ -282,11 +282,11 @@ l
 ### check the conditions on the angle for the front layer (usually air) -pwils
     #print('reverse imag part at start and emission point  and back if neg andzerod out kz if small back em only ')
     if abs(np.real(n_list[0]*cos(th_list[0]))) < 1e-7: #TODO: this needs to be checked
-        if np.imag(n_list[0]*cos(th_list[0])) > 0:
+        if np.imag(n_list[0]*cos(th_list[0])) >= 0: # added the '=', no flipping needed if component is 0j [2026-06-30 pwils]
             th_list[0] = th_list[0]
         else:
             th_list[0] = np.pi - (th_list[0])
-    if np.imag(n_list[li+1]*cos(th_list[li+1])) > 0:
+    if np.imag(n_list[li+1]*cos(th_list[li+1])) >= 0: # added the '=', no flipping needed if component is 0j [2026-06-30 pwils]
         th_list[li+1] = th_list[li+1]
     else:
         th_list[li+1] = np.pi - th_list[li+1]
@@ -303,7 +303,7 @@ l
 
     #kz is the z-component of (complex) angular wavevector for forward-moving
     #wave. Positive imaginary part means decaying.
-    kz_list = 2 * np.pi * n_list * sp.cos(th_list) / lam_vac
+    kz_list = 2 * np.pi * n_list * np.cos(th_list) / lam_vac
     for i in range(len(kz_list)):
         if n_list[i].imag == 0:
             kz_list[i] = kz_list[i].real + 0.j
@@ -312,9 +312,9 @@ l
 
     #delta is the total phase accrued by traveling through a given layer.
     #ignore warning about inf multiplication
-    olderr = sp.seterr(invalid= 'ignore')
+    olderr = sp.special.seterr(invalid= 'ignore') # updated sp.seterr(invalid = 'ignore') to sp.special.seterr(all = 'ignore') -pwils [2026-05-21]
     delta = kz_list * d_list
-    sp.seterr(**olderr)
+    sp.special.seterr(**olderr)
     
     #t_list[i,j] and r_list[i,j] are transmission and reflection amplitudes,
     #respectively, coming from i, going to j. Only need to calculate this when
@@ -608,7 +608,7 @@ l
     data.vw_list_r1 = vw_list_r1; data.vw_list_l1 = vw_list_l1;
     data.vw_list_r2 = vw_list_r2; data.vw_list_l2 = vw_list_l2;
 
-    data.th_list = th_list; data.cos_th_list = sp.cos(th_list);
+    data.th_list = th_list; data.cos_th_list = np.cos(th_list);
     data.phi_i = phi_i;
     data.pol = pol; data.n_list = n_list; data.d_list = d_list;
     data.th_i = th_i ; data.lam_vac = lam_vac;
