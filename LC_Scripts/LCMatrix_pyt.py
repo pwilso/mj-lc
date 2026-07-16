@@ -201,6 +201,11 @@ if run_cmdline == True or run_Sentaurus == True:
     # layer. Multiple threads are spawned, each processing one layer.
 #%%
     def process_layer(li):
+        """
+        Calculates the coupling for emission points in layer 'li.'
+        
+        :param li: Index of layer where emission occurs.
+        """
             # Calculate coupling for emission layer li
             print( "* Processing layer {0}. {1} y-values.".format(e.layers[li].name, len(e.layers[li].yvalues)))
             
