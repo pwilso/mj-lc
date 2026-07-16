@@ -542,8 +542,14 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                         x2 = 0.5*(full_yk_list[index] + full_yk_list[index+1])
                         dz = x2-x1
                         dz_list[index] = dz
-                        scaled_a_TE[index] = a_TE_interp.integral(x1, x2)/dz
-                        scaled_a_TM[index] = a_TM_interp.integral(x1, x2)/dz
+                        #scaled_a_TE[index] = a_TE_interp.integral(x1, x2)/dz
+                        scaled_a_TE[index] = 0.5*(calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TE', power_output1_TE) + calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TE', power_output2_TE)))/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
+                        #scaled_a_TM[index] = a_TM_interp.integral(x1, x2)/dz
+                        scaled_a_TM[index] = 0.5*(calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TM', power_output1_TM) + calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TM', power_output2_TM)))/dz
                         #######################################################
                         if write_H5 == True:
                             pos_row_scaled['zA'] = yA
@@ -560,8 +566,14 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                     x2 = 0.5*(full_yk_list[0] + full_yk_list[1])
                     dz = x2-x1
                     dz_list[0] = dz
-                    scaled_a_TE[0] = a_TE_interp.integral(x1, x2)/dz
-                    scaled_a_TM[0] = a_TM_interp.integral(x1, x2)/dz
+                    #scaled_a_TE[0] = a_TE_interp.integral(x1, x2)/dz
+                    scaled_a_TE[0] = 0.5*(calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TE', power_output1_TE) + calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TE', power_output2_TE)))/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
+                    #scaled_a_TM[0] = a_TM_interp.integral(x1, x2)/dz
+                    scaled_a_TM[index] = 0.5*(calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TM', power_output1_TM) + calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TM', power_output2_TM)))/dz
                     ########################################################
                     if write_H5 == True:
                         pos_row_scaled['zA'] = yA
@@ -576,8 +588,14 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                     x2 = full_yk_list[-1]
                     dz=x2-x1
                     dz_list[-1] = dz
-                    scaled_a_TE[-1] = a_TE_interp.integral(x1, x2)/dz
-                    scaled_a_TM[-1] = a_TM_interp.integral(x1, x2)/dz
+                    #scaled_a_TE[-1] = a_TE_interp.integral(x1, x2)/dz
+                    scaled_a_TE[-1] = 0.5*(calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TE', power_output1_TE) + calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TE', power_output2_TE)))/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
+                    #scaled_a_TM[-1] = a_TM_interp.integral(x1, x2)/dz
+                    scaled_a_TM[index] = 0.5*(calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TM', power_output1_TM) + calc_a_def_int(full_lk_list[index], 
+                                                            x1, x2, 'TM', power_output2_TM)))/dz
                     ########################################################
                     if write_H5 == True:
                         pos_row_scaled['zA'] = yA
@@ -1022,7 +1040,7 @@ def calc_a_ordered_integ_writeH5_test(int li, int lk, double yA, double yB, data
 def calc_a_def_int(lk, z1, z2, pol, power_output):
     # calculate the definite integral of a under its corresponding mesh element
     layer = lk
-    power_output = data.power_output1
+    #power_output = data.power_output1
     w = vw_list_l1[layer][0]
     v = vw_list_l1[layer][1]
     n = n_list[layer+1]
