@@ -543,13 +543,13 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                         dz = x2-x1
                         dz_list[index] = dz
                         #scaled_a_TE[index] = a_TE_interp.integral(x1, x2)/dz
-                        scaled_a_TE[index] = 0.5*(calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TE', power_output1_TE) + calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TE', power_output2_TE)))/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
+                        scaled_a_TE[index] = tmm.calc_a_def_int(full_lk_list[index], 
+                                                                x1, x2, 
+                                                                data_list_TE[E_i][th_i])/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
                         #scaled_a_TM[index] = a_TM_interp.integral(x1, x2)/dz
-                        scaled_a_TM[index] = 0.5*(calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TM', power_output1_TM) + calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TM', power_output2_TM)))/dz
+                        scaled_a_TM[index] = tmm.calc_a_def_int(full_lk_list[index], 
+                                                                x1, x2, 
+                                                                data_list_TM[E_i][th_i])/dz
                         #######################################################
                         if write_H5 == True:
                             pos_row_scaled['zA'] = yA
@@ -567,13 +567,13 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                     dz = x2-x1
                     dz_list[0] = dz
                     #scaled_a_TE[0] = a_TE_interp.integral(x1, x2)/dz
-                    scaled_a_TE[0] = 0.5*(calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TE', power_output1_TE) + calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TE', power_output2_TE)))/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
+                    scaled_a_TE[0] = tmm.calc_a_def_int(full_lk_list[0], 
+                                                        x1, x2, 
+                                                        data_list_TE[E_i][th_i])/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
                     #scaled_a_TM[0] = a_TM_interp.integral(x1, x2)/dz
-                    scaled_a_TM[index] = 0.5*(calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TM', power_output1_TM) + calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TM', power_output2_TM)))/dz
+                    scaled_a_TM[index] = tmm.calc_a_def_int(full_lk_list[0], 
+                                                                x1, x2, 
+                                                                data_list_TM[E_i][th_i])/dz
                     ########################################################
                     if write_H5 == True:
                         pos_row_scaled['zA'] = yA
@@ -589,13 +589,13 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                     dz=x2-x1
                     dz_list[-1] = dz
                     #scaled_a_TE[-1] = a_TE_interp.integral(x1, x2)/dz
-                    scaled_a_TE[-1] = 0.5*(calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TE', power_output1_TE) + calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TE', power_output2_TE)))/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
+                    scaled_a_TE[-1] = tmm.calc_a_def_int(full_lk_list[-1], 
+                                                         x1, x2, 
+                                                         data_list_TE[E_i][th_i])/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
                     #scaled_a_TM[-1] = a_TM_interp.integral(x1, x2)/dz
-                    scaled_a_TM[index] = 0.5*(calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TM', power_output1_TM) + calc_a_def_int(full_lk_list[index], 
-                                                            x1, x2, 'TM', power_output2_TM)))/dz
+                    scaled_a_TM[index] = tmm.calc_a_def_int(full_lk_list[index], 
+                                                                x1, x2, 
+                                                                data_list_TM[E_i][th_i])/dz
                     ########################################################
                     if write_H5 == True:
                         pos_row_scaled['zA'] = yA
@@ -619,15 +619,15 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                 #print('divided list 2, P', P_vals)
                 # print(len(P_vals))
                 # P_list_int[index] = trapz(P_vals, x = x_vals)                    
-                        print('*** Warning: sum of transmitted and absorbed photons != 1.')
-                        print('    yA = {0} theta = {1} E = {2}'.format(yA, th_list[th_i], E_list[E_i]))
+                            print('*** Warning: sum of transmitted and absorbed photons != 1.')
+                            print('    yA = {0} theta = {1} E = {2}'.format(yA, th_list[th_i], E_list[E_i]))
                         #print('    all_a_TE:')
                         #print(list(all_a_TE))
                         #print('    all_a_TM:')
                         #print(list(all_a_TM))
                         #print('    all_yk:')
                         #print(list(full_yk_list))
-                        print('    Absorbed: {0} Front loss: {1} Back loss: {2}'.format(ph_absorbed, front_loss, back_loss))
+                            print('    Absorbed: {0} Front loss: {1} Back loss: {2}'.format(ph_absorbed, front_loss, back_loss))
                     P0_list[th_i]  = scaled_a_TE * sin_th_list[th_i]
                     P0_list[th_i] += scaled_a_TM * sin_th_list[th_i]
                     front_loss0_list[th_i] = front_loss* sin_th_list[th_i]
