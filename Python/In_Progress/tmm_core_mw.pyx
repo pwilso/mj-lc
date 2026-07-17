@@ -1080,8 +1080,8 @@ cdef float calc_def_integrad(int layer,  double yB, Tmm_data_internalsource data
         A3_bwd_star = A3_bwd_star if np.abs(A3_bwd_star) > sys.float_info.epsilon else 0.
         
     if np.imag(kz) != 0:
-        def_int_fwd = 0.5*(A1_fwd*np.exp(2*z2*np.imag(kz))/np.imag(kz) - A2_fwd*exp(-2*z2*np.imag(kz))/np.imag(kz) - 1j*A3_fwd*np.exp(2*1j*z2*np.real(kz))/np.real(kz)  + 1j*A3_fwd_star*exp(-2*1j*z2*np.real(kz))/np.real(kz))
-        def_int_bwd = 0.5*(A1_bwd*np.exp(2*z2*np.imag(kz))/np.imag(kz) - A2_bwd*exp(-2*z2*np.imag(kz))/np.imag(kz) - 1j*A3_bwd*np.exp(2*1j*z2*np.real(kz))/np.real(kz)  + 1j*A3_bwd_star*exp(-2*1j*z2*np.real(kz))/np.real(kz))
+        def_int_fwd = 0.5*(A1_fwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_fwd*exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_fwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_fwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
+        def_int_bwd = 0.5*(A1_bwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_bwd*exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_bwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_bwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
         
     else:
         def_int_fwd = 0.
