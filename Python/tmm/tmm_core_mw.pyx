@@ -312,7 +312,7 @@ l
 
     #delta is the total phase accrued by traveling through a given layer.
     #ignore warning about inf multiplication
-    olderr = sp.special.seterr(invalid= 'ignore') # updated sp.seterr(invalid = 'ignore') to sp.special.seterr(all = 'ignore') -pwils [2026-05-21]
+    olderr = sp.special.seterr(all = 'ignore') # updated sp.seterr(invalid = 'ignore') to sp.special.seterr(all = 'ignore') -pwils [2026-05-21]
     delta = kz_list * d_list
     sp.special.seterr(**olderr)
     
@@ -959,6 +959,140 @@ cdef inline list position_resolved_a_test_h5(int layer, double dist, Tmm_data_in
     extra_data = [absor, Ef1, Eb1, Ef2, Eb2, data.power_output1, data.power_output2, front_loss, back_loss]
     return extra_data
 
+cdef float calc_def_integrad(int layer,  double yB, Tmm_data_internalsource data): # layer = lk
+    cdef complex kz  = data.kz_list[layer+1]
+    cdef complex n   = data.n_list[layer+1]
+    cdef complex th = data.th_list[layer+1]
+    cdef complex power_out1 = data.power_output1
+    cdef complex power_out2 = data.power_output2
+    cdef int pol = data.pol
+    cdef complex v_fwd = 0+0j 
+    cdef complex w_fwd = 0+0j
+    cdef complex v_bwd = 0+0j
+    cdef complex w_bwd = 0+0j
+    cdef double z = 0.
+    cdef double z2 = 0.
+    cdef complex A1_fwd, A1_bwd, A2_fwd, A2_bwd
+    cdef complex A3_fwd, A3_fwd_star, A3_bwd, A3_bwd_star
+    cdef double def_int_fwd, def_int_bwd
+    
+    if  layer < data.source_layer: # you are to the left of the emission source
+
+        v_fwd = data.vw_list_l1[layer+1][0] # Ef for the forward emission
+        w_fwd = data.vw_list_l1[layer+1][1] # Eb for the forward emission
+        v_bwd = data.vw_list_l2[layer+1][0] # Ef for the backward emission
+        w_bwd = data.vw_list_l2[layer+1][1] # Eb for the backward emission
+
+        z = yB - sum(data.d_list[1:layer+2]) #distance from boundary to absorption point
+
+    elif layer > data.source_layer: # you are to the right of the emission source
+        v_fwd = data.vw_list_r1[layer - data.source_layer][0] # Ef for the forward emission
+        w_fwd = data.vw_list_r1[layer - data.source_layer][1] # Eb for the forward emission
+        v_bwd = data.vw_list_r2[layer - data.source_layer][0] # Ef for the backward emission
+        w_bwd = data.vw_list_r2[layer - data.source_layer][1] # Eb for the backward emission
+
+        z = yB - sum(data.d_list[1:layer+1]) #distance from boundary to absorption point
+
+    elif layer == data.source_layer:
+        if (yB < sum(data.d_list[1:layer+1]) + data.yA): # you are to the left of the emission source
+            v_fwd = data.vw_list_l1[layer+1][0] # Ef for the forward emission
+            w_fwd = data.vw_list_l1[layer+1][1] # Eb for the forward emission
+            v_bwd = data.vw_list_l2[layer+1][0] # Ef for the backward emission
+            w_bwd = data.vw_list_l2[layer+1][1] # Eb for the backward emission
+
+            z = yB - (sum(data.d_list[1:layer+1]) + data.yA) #distance from boundary to absorption point
+
+        elif (yB > sum(data.d_list[1:layer+1]) + data.yA): # you are to the right of the emission source
+            v_fwd = data.vw_list_r1[0][0] # Ef for the forward emission
+            w_fwd = data.vw_list_r1[0][1] # Eb for the forward emission
+            v_bwd = data.vw_list_r2[0][0] # Ef for the backward emission
+            w_bwd = data.vw_list_r2[0][1] # Eb for the backward emission
+
+            z = yB - (sum(data.d_list[1:layer+1]) + data.yA) #distance from boundary to absorption point
+            
+    if pol == TE:
+        A1_fwd = np.imag(n*cos(th)*kz)*w_fwd*w_fwd.conjugate()/power_out1
+        A1_fwd = A1_fwd if np.abs(A1_fwd) > sys.float_info.epsilon else 0.
+        A2_fwd =np.imag(n*cos(th)*kz)*v_fwd*v_fwd.conjugate()/power_out1
+        A2_fwd = A2_fwd if np.abs(A2_fwd) > sys.float_info.epsilon else 0.
+        A3_fwd = np.imag(n*cos(th)*kz)*v_fwd*w_fwd.conjugate()/power_out1
+        A3_fwd = A3_fwd if np.abs(A3_fwd) > sys.float_info.epsilon else 0.
+        A3_fwd_star = A3_fwd.conjugate()
+        A3_fwd_star = A3_fwd_star if np.abs(A3_fwd_star) > sys.float_info.epsilon else 0.
+        
+        A1_bwd = np.imag(n*cos(th)*kz)*w_bwd*w_bwd.conjugate()/power_out2
+        A1_bwd = A1_bwd if np.abs(A1_bwd) > sys.float_info.epsilon else 0.
+        A2_bwd =np.imag(n*cos(th)*kz)*v_bwd*v_bwd.conjugate()/power_out2
+        A2_bwd = A2_bwd if np.abs(A2_bwd) > sys.float_info.epsilon else 0.
+        A3_bwd = np.imag(n*cos(th)*kz)*v_bwd*w_bwd.conjugate()/power_out2
+        A3_bwd = A3_bwd if np.abs(A3_bwd) > sys.float_info.epsilon else 0.
+        A3_bwd_star = A3_bwd.conjugate()
+        A3_bwd_star = A3_bwd_star if np.abs(A3_bwd_star) > sys.float_info.epsilon else 0.
+
+    elif pol == TM:
+        A1_fwd = 2*np.imag(kz)*np.real(n*cos(th).conjugate())*w_fwd*w_fwd.conjugate()/power_out1
+        A1_fwd = A1_fwd if np.abs(A1_fwd) > sys.float_info.epsilon else 0.
+        A2_fwd =2*np.imag(kz)*np.real(n*cos(th).conjugate())*v_fwd*v_fwd.conjugate()/power_out1
+        A2_fwd = A2_fwd if np.abs(A2_fwd) > sys.float_info.epsilon else 0.
+        A3_fwd = -2*np.real(kz)*np.imag(n*cos(th).conjugate())*v_fwd*w_fwd.conjugate()/power_out1
+        A3_fwd = np.imag(n*cos(th)*kz)*v_fwd*w_fwd.conjugate()/power_out1
+        A3_fwd = A3_fwd if np.abs(A3_fwd) > sys.float_info.epsilon else 0.
+        A3_fwd_star = A3_fwd.conjugate()
+        A3_fwd_star = A3_fwd_star if np.abs(A3_fwd_star) > sys.float_info.epsilon else 0.
+
+        A1_bwd = 2*np.imag(kz)*np.real(n*cos(th).conjugate())*w_bwd*w_bwd.conjugate()/power_out2
+        A1_bwd = A1_bwd if np.abs(A1_bwd) > sys.float_info.epsilon else 0.
+        A2_bwd =2*np.imag(kz)*np.real(n*cos(th).conjugate())*v_bwd*v_bwd.conjugate()/power_out2
+        A2_bwd = A2_bwd if np.abs(A2_bwd) > sys.float_info.epsilon else 0.
+        A3_bwd = -2*np.real(kz)*np.imag(n*cos(th).conjugate())*v_bwd*w_bwd.conjugate()/power_out2
+        A3_bwd = A3_bwd if np.abs(A3_bwd) > sys.float_info.epsilon else 0.
+        A3_bwd_star = A3_bwd.conjugate()
+        A3_bwd_star = A3_bwd_star if np.abs(A3_bwd_star) > sys.float_info.epsilon else 0.
+        
+    if np.imag(kz) != 0:
+        def_int_fwd = 0.5*(A1_fwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_fwd*exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_fwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_fwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
+        def_int_bwd = 0.5*(A1_bwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_bwd*exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_bwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_bwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
+        
+    else:
+        def_int_fwd = 0.
+        def_int_bwd = 0.
+    def_int = 0.5*(def_int_fwd + def_int_bwd)
+    
+    if math.isnan(def_int_fwd) or math.isinf(def_int_fwd):
+      print('fwd: ',def_int_fwd)
+      print('bwd: ',def_int_bwd)
+      print('source: ', data.source_layer, 'dest: ', layer)
+      print('z:', z, ' yB: ', yB)
+      print(A1_fwd)
+      print(A2_fwd)
+      print(A3_fwd)
+      print(A3_fwd_star)
+    
+    if def_int_fwd > 1000:
+        print('int_fwd: ',def_int_fwd)
+        print('source: ', data.source_layer, 'dest: ', layer)
+        print('z:', z, ' yB: ', yB)
+        print('A1_fwd: ', A1_fwd)
+        print('A2_fwd: ', A2_fwd)
+        print('A3_fwd: ', A3_fwd)
+        print('A1_fwd*: ', A3_fwd_star)
+        print('power1:', power_out1)
+        print('kz imag: ', np.imag(kz))
+        print('kz real: ', np.real(kz))
+        
+    if def_int_bwd > 1000:
+        print('bwd: ',def_int_bwd)
+        print('source: ', data.source_layer, 'dest: ', layer)
+        print('z:', z, ' yB: ', yB)
+        print('A1_bwd: ', A1_bwd)
+        print('A2_bwd: ', A2_bwd)
+        print('A3_bwd: ', A3_bwd)
+        print('A3_bwd*: ', A3_bwd_star)
+        print('power2:', power_out2)
+        print('kz imag: ', np.imag(kz))
+        print('kz real: ', np.real(kz))
+    
+    return def_int
 cdef float calc_a_def_int(int layer,  double yB1, double yB2, Tmm_data_internalsource data): # layer = lk
     # start = time.time()
     cdef complex kz  = data.kz_list[layer+1]

@@ -32,3 +32,5 @@ cdef get_k_vec(complex nk, double lambda0, double phi)
 cdef list position_resolved_a_test_h5(int layer, double dist, Tmm_data_internalsource data)
 
 cdef float calc_a_def_int(int layer,  double yB1, double yB2, Tmm_data_internalsource data)
+
+cdef float calc_def_integrad(int layer,  double yB, Tmm_data_internalsource data)
