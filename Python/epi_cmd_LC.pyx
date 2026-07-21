@@ -543,13 +543,55 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                         dz = x2-x1
                         dz_list[index] = dz
                         #scaled_a_TE[index] = a_TE_interp.integral(x1, x2)/dz
-                        scaled_a_TE[index] = tmm.calc_a_def_int(full_lk_list[index], 
-                                                                x1, x2, 
-                                                                data_list_TE[E_i][th_i])/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
+                        a_TE_z1 = tmm.calc_def_integrad(full_lk_list[index], 
+                                                        x1, 
+                                                        data_list_TE[E_i][th_i])
+                        #print("anti-derivative @ x1: ", a_TE_z1)
+                        #print("x1: ", x1)
+                        a_TE_z2 = tmm.calc_def_integrad(full_lk_list[index], 
+                                                        x2, 
+                                                        data_list_TE[E_i][th_i])
+                        #print("anti-derivative @ x2: ", a_TE_z2)
+                        #print("x2: ", x2)
+                        if x1 < yA and x2 > yA:
+                            a_TE_z11 = tmm.calc_def_integrad(full_lk_list[index], 
+                                                        yA - 1e-10, # a small value to the left of yA 
+                                                        data_list_TE[E_i][th_i])
+                            a_TE_z22 = tmm.calc_def_integrad(full_lk_list[index], 
+                                                        yA + 1e-10, # a small value to the right of yA 
+                                                        data_list_TE[E_i][th_i])
+                            scaled_a_TE[index] = ((a_TE_z11 - a_TE_z1) + (a_TE_z2 - a_TE_z22))/dz # splits the integral in half since yA is technically a boundary
+                        else:
+                            scaled_a_TE[index] = (a_TE_z2 - a_TE_z1)/dz
+                        if dz < 0: 
+                            print("dz: ", dz, "x1: ", x1, "x2: ", x2)
+                        if scaled_a_TE[index] < 0: 
+                            print("a_TE_z1: ", a_TE_z1, "a_TE_z2: ", a_TE_z2, "x1: ", x1, "x2: ", x2)
+                            print("a_TE_z11: ", a_TE_z11, "a_TE_z22: ", a_TE_z22, "x1: ", x1, "x2: ", x2)
+                            print("yA: ", yA)
+                        # scaled_a_TE[index] = tmm.calc_a_def_int(full_lk_list[index], 
+                                                                # x1, x2, 
+                                                                # data_list_TE[E_i][th_i])/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
                         #scaled_a_TM[index] = a_TM_interp.integral(x1, x2)/dz
-                        scaled_a_TM[index] = tmm.calc_a_def_int(full_lk_list[index], 
-                                                                x1, x2, 
-                                                                data_list_TM[E_i][th_i])/dz
+                        a_TM_z1 = tmm.calc_def_integrad(full_lk_list[index], 
+                                                        x1, 
+                                                        data_list_TM[E_i][th_i])
+                        a_TM_z2 = tmm.calc_def_integrad(full_lk_list[index], 
+                                                        x2, 
+                                                        data_list_TM[E_i][th_i])
+                        if x1 < yA and x2 > yA:
+                            a_TM_z11 = tmm.calc_def_integrad(full_lk_list[index], 
+                                                        yA - 1e-10, # a small value to the left of yA 
+                                                        data_list_TM[E_i][th_i])
+                            a_TM_z22 = tmm.calc_def_integrad(full_lk_list[index], 
+                                                        yA + 1e-10, # a small value to the right of yA 
+                                                        data_list_TM[E_i][th_i])
+                            scaled_a_TM[index] = ((a_TM_z11 - a_TM_z1) + (a_TM_z2 - a_TM_z22))/dz # splits the integral in half since yA is technically a boundary
+                        else:
+                            scaled_a_TM[index] = (a_TM_z2 - a_TM_z1)/dz
+                        # scaled_a_TM[index] = tmm.calc_a_def_int(full_lk_list[index], 
+                                                                # x1, x2, 
+                                                                # data_list_TM[E_i][th_i])/dz
                         #######################################################
                         if write_H5 == True:
                             pos_row_scaled['zA'] = yA
@@ -567,13 +609,27 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                     dz = x2-x1
                     dz_list[0] = dz
                     #scaled_a_TE[0] = a_TE_interp.integral(x1, x2)/dz
-                    scaled_a_TE[0] = tmm.calc_a_def_int(full_lk_list[0], 
-                                                        x1, x2, 
-                                                        data_list_TE[E_i][th_i])/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
+                    a_TE_z1 = tmm.calc_def_integrad(full_lk_list[0], 
+                                                        x1, 
+                                                        data_list_TE[E_i][th_i])
+                    a_TE_z2 = tmm.calc_def_integrad(full_lk_list[0], 
+                                                        x2, 
+                                                        data_list_TE[E_i][th_i])
+                    scaled_a_TE[0] = (abs(a_TE_z2) - abs(a_TE_z1))/dz # taking the absolute value prevents negative values when straddling the emisison point (sign change on opposite side)
+                    # scaled_a_TE[0] = tmm.calc_a_def_int(full_lk_list[0], 
+                                                        # x1, x2, 
+                                                        # data_list_TE[E_i][th_i])/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
                     #scaled_a_TM[0] = a_TM_interp.integral(x1, x2)/dz
-                    scaled_a_TM[index] = tmm.calc_a_def_int(full_lk_list[0], 
-                                                                x1, x2, 
-                                                                data_list_TM[E_i][th_i])/dz
+                    a_TM_z1 = tmm.calc_def_integrad(full_lk_list[0], 
+                                                        x1, 
+                                                        data_list_TM[E_i][th_i])
+                    a_TM_z2 = tmm.calc_def_integrad(full_lk_list[0], 
+                                                        x2, 
+                                                        data_list_TM[E_i][th_i])
+                    scaled_a_TM[0] = (abs(a_TM_z2) - abs(a_TM_z1))/dz # taking the absolute value prevents negative values when straddling the emisison point (sign change on opposite side)
+                    # scaled_a_TM[index] = tmm.calc_a_def_int(full_lk_list[0], 
+                                                                # x1, x2, 
+                                                                # data_list_TM[E_i][th_i])/dz
                     ########################################################
                     if write_H5 == True:
                         pos_row_scaled['zA'] = yA
@@ -589,13 +645,27 @@ def calc_a_integrate_over_z(int li, double yA, data_list_TE,  data_list_TM,  e, 
                     dz=x2-x1
                     dz_list[-1] = dz
                     #scaled_a_TE[-1] = a_TE_interp.integral(x1, x2)/dz
-                    scaled_a_TE[-1] = tmm.calc_a_def_int(full_lk_list[-1], 
-                                                         x1, x2, 
-                                                         data_list_TE[E_i][th_i])/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
+                    a_TE_z1 = tmm.calc_def_integrad(full_lk_list[-1], 
+                                                        x1, 
+                                                        data_list_TE[E_i][th_i])
+                    a_TE_z2 = tmm.calc_def_integrad(full_lk_list[-1], 
+                                                        x2, 
+                                                        data_list_TE[E_i][th_i])
+                    scaled_a_TE[-1] = (abs(a_TE_z2) - abs(a_TE_z1))/dz # taking the absolute value prevents negative values when straddling the emisison point (sign change on opposite side)
+                    # scaled_a_TE[-1] = tmm.calc_a_def_int(full_lk_list[-1], 
+                                                         # x1, x2, 
+                                                         # data_list_TE[E_i][th_i])/dz #tests using the definite form of the integral rather than the trapezoidal integration method which can overestimate integral
                     #scaled_a_TM[-1] = a_TM_interp.integral(x1, x2)/dz
-                    scaled_a_TM[index] = tmm.calc_a_def_int(full_lk_list[index], 
-                                                                x1, x2, 
-                                                                data_list_TM[E_i][th_i])/dz
+                    a_TM_z1 = tmm.calc_def_integrad(full_lk_list[-1], 
+                                                        x1, 
+                                                        data_list_TM[E_i][th_i])
+                    a_TM_z2 = tmm.calc_def_integrad(full_lk_list[-1], 
+                                                        x2, 
+                                                        data_list_TM[E_i][th_i])
+                    scaled_a_TM[-1] = (abs(a_TM_z2) - abs(a_TM_z1))/dz # taking the absolute value prevents negative values when straddling the emisison point (sign change on opposite side)
+                    # scaled_a_TM[index] = tmm.calc_a_def_int(full_lk_list[index], 
+                                                                # x1, x2, 
+                                                                # data_list_TM[E_i][th_i])/dz
                     ########################################################
                     if write_H5 == True:
                         pos_row_scaled['zA'] = yA
