@@ -1050,9 +1050,18 @@ cdef float calc_def_integrad(int layer,  double yB, Tmm_data_internalsource data
         A3_bwd_star = A3_bwd_star if np.abs(A3_bwd_star) > sys.float_info.epsilon else 0.
         
     if np.imag(kz) != 0:
-        def_int_fwd = 0.5*(A1_fwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_fwd*exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_fwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_fwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
-        def_int_bwd = 0.5*(A1_bwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_bwd*exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_bwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_bwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
-        
+        try:
+            def_int_fwd = 0.5*(A1_fwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_fwd*exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_fwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_fwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
+            def_int_bwd = 0.5*(A1_bwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_bwd*exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_bwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_bwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
+        except OverflowError:
+            if A1_fwd == A2_fwd == A3_fwd == A3_fwd_star == 0: 
+                def_int_fwd = 0
+            else:
+                print("*** Warning: Overflow Error occured in definite integral calculation and multiplying factors are nonzero.")
+            if A1_bwd == A2_bwd == A3_bwd == A3_bwd_star == 0: 
+                def_int_bwd = 0
+            else:
+                print("*** Warning: Overflow Error occured in definite integral calculation and multiplying factors are nonzero.")
     else:
         def_int_fwd = 0.
         def_int_bwd = 0.
@@ -1093,6 +1102,7 @@ cdef float calc_def_integrad(int layer,  double yB, Tmm_data_internalsource data
         print('kz real: ', np.real(kz))
     
     return def_int
+ 
 cdef float calc_a_def_int(int layer,  double yB1, double yB2, Tmm_data_internalsource data): # layer = lk
     # start = time.time()
     cdef complex kz  = data.kz_list[layer+1]
