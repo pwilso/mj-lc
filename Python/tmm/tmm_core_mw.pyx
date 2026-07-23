@@ -1050,47 +1050,48 @@ cdef float calc_def_integrad(int layer,  double yB, Tmm_data_internalsource data
         A3_bwd_star = A3_bwd_star if np.abs(A3_bwd_star) > sys.float_info.epsilon else 0.
         
     if np.imag(kz) != 0:
-        try:
-            def_int_fwd = 0.5*(A1_fwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_fwd*exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_fwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_fwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
-            def_int_bwd = 0.5*(A1_bwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_bwd*exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_bwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_bwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
-        # usually the terms will go to zero since the A terms are 0j or the not overflowing exponents are forced to be small
-        # but there may be some instances which the value is small instead of zero so we will treat each of the terms individually
-        except OverflowError:
-            if A1_fwd == 0:
-                term1 = 0
-            else:
-                term1 = A1_fwd*np.exp(2*z*np.imag(kz))/np.imag(kz)
-            if A2_fwd == 0:
-                term2 = 0
-            else:
-                term2 = - A2_fwd*exp(-2*z*np.imag(kz))/np.imag(kz)
-            if A3_fwd == 0:
-                term3 = 0
-            else:
-                term3 = - 1j*A3_fwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)
-            if A3_fwd_star == 0:
-                term4 = 0
-            else:
-                term4 = 1j*A3_fwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
-            def_int_fwd = 0.5*(term1 + term2 + term3 + term4)
+        with np.errstate(over = 'raise'):
+            try:
+                def_int_fwd = 0.5*(A1_fwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_fwd*np.exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_fwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_fwd_star*np.exp(-2*1j*z*np.real(kz))/np.real(kz))
+                def_int_bwd = 0.5*(A1_bwd*np.exp(2*z*np.imag(kz))/np.imag(kz) - A2_bwd*np.exp(-2*z*np.imag(kz))/np.imag(kz) - 1j*A3_bwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)  + 1j*A3_bwd_star*np.exp(-2*1j*z*np.real(kz))/np.real(kz))
+            # usually the terms will go to zero since the A terms are 0j or the not overflowing exponents are forced to be small
+            # but there may be some instances which the value is small instead of zero so we will treat each of the terms individually
+            except FloatingPointError:
+                if A1_fwd == 0:
+                    term1 = 0
+                else:
+                    term1 = A1_fwd*exp(2*z*np.imag(kz))/np.imag(kz)
+                if A2_fwd == 0:
+                    term2 = 0
+                else:
+                    term2 = -A2_fwd*exp(-2*z*np.imag(kz))/np.imag(kz)
+                if A3_fwd == 0:
+                    term3 = 0
+                else:
+                    term3 = -1j*A3_fwd*exp(2*1j*z*np.real(kz))/np.real(kz)
+                if A3_fwd_star == 0:
+                    term4 = 0
+                else:
+                    term4 = 1j*A3_fwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz)
+                def_int_fwd = 0.5*(term1 + term2 + term3 + term4)
 
-            if A1_bwd == 0:
-                term1 = 0
-            else:
-                term1 = A1_bwd*np.exp(2*z*np.imag(kz))/np.imag(kz)
-            if A2_bwd == 0:
-                term2 = 0
-            else:
-                term2 = - A2_bwd*exp(-2*z*np.imag(kz))/np.imag(kz)
-            if A3_bwd == 0:
-                term3 = 0
-            else:
-                term3 = - 1j*A3_bwd*np.exp(2*1j*z*np.real(kz))/np.real(kz)
-            if A3_bwd_star == 0:
-                term4 = 0
-            else:
-                term4 = 1j*A3_bwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz))
-            def_int_bwd = 0.5*(term1 + term2 + term3 + term4)
+                if A1_bwd == 0:
+                    term1 = 0
+                else:
+                    term1 = A1_bwd*exp(2*z*np.imag(kz))/np.imag(kz)
+                if A2_bwd == 0:
+                    term2 = 0
+                else:
+                    term2 = -A2_bwd*exp(-2*z*np.imag(kz))/np.imag(kz)
+                if A3_bwd == 0:
+                    term3 = 0
+                else:
+                    term3 = -1j*A3_bwd*exp(2*1j*z*np.real(kz))/np.real(kz)
+                if A3_bwd_star == 0:
+                    term4 = 0
+                else:
+                    term4 = 1j*A3_bwd_star*exp(-2*1j*z*np.real(kz))/np.real(kz)
+                def_int_bwd = 0.5*(term1 + term2 + term3 + term4)
     else:
         def_int_fwd = 0.
         def_int_bwd = 0.
@@ -1104,10 +1105,14 @@ cdef float calc_def_integrad(int layer,  double yB, Tmm_data_internalsource data
       print('source: ', data.source_layer, 'dest: ', layer)
       print('z:', z, ' yB: ', yB)
       print('kz:', kz)                
-      print(A1_fwd)
-      print(A2_fwd)
-      print(A3_fwd)
-      print(A3_fwd_star)
+      print("A1_fwd:", A1_fwd)
+      print("A2_fwd:", A2_fwd)
+      print("A3_fwd:", A3_fwd)
+      print("A3_fwd_star:", A3_fwd_star)
+      print("A1_bwd:", A1_bwd)
+      print("A2_bwd:", A2_bwd)
+      print("A2_bwd:", A3_bwd)
+      print("A2_bwd:", A3_bwd_star)
     
     if def_int_fwd > 1000:
         print('int_fwd: ',def_int_fwd)
