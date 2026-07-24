@@ -1,0 +1,4 @@
+Region = "substrate" { Insert = "/results/nodes/29/./npar/n29_GaAs_5.0_1e18.par" }
+Region = "top" { Insert = "/results/nodes/29/./npar/n29_GaInP_0.05_0.51_1e18.par" }
+Region = "middle" { Insert = "/results/nodes/29/./npar/n29_GaAs_1.0_1e18.par" }
+Region = "base" { Insert = "/results/nodes/29/./npar/n29_GaInP_0.05_0.51_1e18.par" }

@@ -1,0 +1,60 @@
+set Xmin "0.0"
+set Xmax "1"
+set dXmin "0.01"
+set dXmax "500.0"
+set Ytop "0.0"
+set dYmin "0.001"
+set dYmax "10.0"
+set Zmin "0.0"
+set Zmax "0.0"
+set dZmin "1.0"
+set dZmax "500.0"
+set generate "tdr"
+set mesher "snmesh"
+set meshOptions ""
+set dimension "2"
+set topContact ""
+set bottomContact ""
+set wtot "1"
+set parFileMask "./npar/n(node)_(material)_(thickness)_(xMole)_(doping).par"
+set epi(region,top,region) {top}
+set epi(region,top,material) {GaInP}
+set epi(region,top,parFile) {GaInP.tcl}
+set epi(region,top,thickness) {0.05}
+set epi(region,top,doping) {1e18}
+set epi(region,top,mole) {0.51}
+set epi(region,top,refinement) {(mbox 0.005 1.3 both)}
+set epi(region,top,row) {1}
+set epi(region,middle,region) {middle}
+set epi(region,middle,material) {GaAs}
+set epi(region,middle,parFile) {GaAs.tcl}
+set epi(region,middle,thickness) {1.0}
+set epi(region,middle,doping) {1e18}
+set epi(region,middle,mole) {}
+set epi(region,middle,refinement) {(mbox 0.005 1.3 both)}
+set epi(region,middle,row) {2}
+set epi(region,base,region) {base}
+set epi(region,base,material) {GaInP}
+set epi(region,base,parFile) {GaInP.tcl}
+set epi(region,base,thickness) {0.05}
+set epi(region,base,doping) {1e18}
+set epi(region,base,mole) {0.51}
+set epi(region,base,refinement) {(mbox 0.005 1.3 both)}
+set epi(region,base,row) {3}
+set epi(region,substrate,region) {substrate}
+set epi(region,substrate,material) {GaAs}
+set epi(region,substrate,parFile) {GaAs.tcl}
+set epi(region,substrate,thickness) {5.0}
+set epi(region,substrate,doping) {1e18}
+set epi(region,substrate,mole) {}
+set epi(region,substrate,refinement) {(mbox 0.005 1.3 both)}
+set epi(region,substrate,row) {4}
+set columnNames {region material parFile thickness doping mole refinement}
+set epi(region,top,y0) 0.0
+set epi(region,top,y1) 0.05
+set epi(region,middle,y0) 0.05
+set epi(region,middle,y1) 1.05
+set epi(region,base,y0) 1.05
+set epi(region,base,y1) 1.1
+set epi(region,substrate,y0) 1.1
+set epi(region,substrate,y1) 6.1
